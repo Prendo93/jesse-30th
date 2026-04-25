@@ -1,5 +1,6 @@
 import { useGameStore } from './store'
 import { LetterStage } from './stages/LetterStage'
+import { SortingStage } from './stages/SortingStage'
 import { StageShell } from './components/StageShell'
 
 function PlaceholderStage({ name }: { name: string }) {
@@ -17,7 +18,7 @@ function App() {
     case 'letter':
       return <LetterStage />
     case 'sorting':
-      return <PlaceholderStage name="sorting" />
+      return <SortingStage />
     case 'potions':
       return <PlaceholderStage name="potions" />
     case 'charms':
