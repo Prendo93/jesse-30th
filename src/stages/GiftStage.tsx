@@ -1,14 +1,20 @@
 import { useState } from 'react'
 import { StageShell } from '../components/StageShell'
 import { dialogue } from '../data/dialogue'
+import { Backdrop } from '../art/Backdrop'
+import { Jesse } from '../art/Jesse'
 
 export function GiftStage() {
   const [opened, setOpened] = useState(false)
   const copy = dialogue.gift
 
   return (
-    <StageShell>
-      <div className="flex w-full max-w-2xl flex-col items-center gap-8 text-center">
+    <StageShell backdrop={<Backdrop name="treasure-room" />}>
+      <Jesse
+        pose={opened ? 'crowned' : 'default'}
+        className="pointer-events-none absolute bottom-0 right-2 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+      />
+      <div className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 text-center backdrop-blur-sm">
         {!opened ? (
           <button
             type="button"

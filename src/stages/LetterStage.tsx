@@ -4,6 +4,7 @@ import { DialogueBox } from '../components/DialogueBox'
 import { ContinueButton } from '../components/ContinueButton'
 import { dialogue } from '../data/dialogue'
 import { useGameStore } from '../store'
+import { Backdrop } from '../art/Backdrop'
 
 export function LetterStage() {
   const [opened, setOpened] = useState(false)
@@ -12,8 +13,8 @@ export function LetterStage() {
   const copy = dialogue.letter
 
   return (
-    <StageShell>
-      <div className="flex flex-col items-center gap-12">
+    <StageShell backdrop={<Backdrop name="castle-exterior" />}>
+      <div className="relative z-20 flex flex-col items-center gap-12">
         {!opened ? (
           <button
             type="button"

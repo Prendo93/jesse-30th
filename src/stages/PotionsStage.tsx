@@ -8,6 +8,8 @@ import {
   type Ingredient,
 } from '../data/potionsRecipe'
 import { useGameStore } from '../store'
+import { Backdrop } from '../art/Backdrop'
+import { Jesse } from '../art/Jesse'
 
 const SLOT_COUNT = 3
 
@@ -41,8 +43,12 @@ export function PotionsStage() {
   }
 
   return (
-    <StageShell>
-      <div className="grid w-full max-w-4xl gap-8 md:grid-cols-[1fr_auto_1fr]">
+    <StageShell backdrop={<Backdrop name="dungeon" />}>
+      <Jesse
+        pose="mixing"
+        className="pointer-events-none absolute bottom-2 right-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+      />
+      <div className="relative z-20 grid w-full max-w-4xl gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm md:grid-cols-[1fr_auto_1fr]">
         <section>
           <h3 className="mb-3 font-rune text-xl uppercase tracking-[0.3em] text-hud-gold">
             Ingredients

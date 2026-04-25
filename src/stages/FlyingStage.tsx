@@ -4,6 +4,8 @@ import { ContinueButton } from '../components/ContinueButton'
 import { dialogue } from '../data/dialogue'
 import { useGameStore } from '../store'
 import { bandFor, type Band } from './flyingBand'
+import { Backdrop } from '../art/Backdrop'
+import { Jesse } from '../art/Jesse'
 
 const TICK_MS = 50
 const STEP = 5
@@ -49,8 +51,12 @@ export function FlyingStage() {
       : copy.fail
 
   return (
-    <StageShell>
-      <div className="flex w-full max-w-md flex-col items-center gap-6">
+    <StageShell backdrop={<Backdrop name="quidditch-sky" />}>
+      <Jesse
+        pose="broom"
+        className="pointer-events-none absolute bottom-4 left-2 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+      />
+      <div className="relative z-20 flex w-full max-w-md flex-col items-center gap-6 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm">
         <div data-testid="flying-state" data-position={position} className="hidden" />
 
         <div className="relative h-72 w-12 border-4 border-hud-gold bg-hud-night/80">

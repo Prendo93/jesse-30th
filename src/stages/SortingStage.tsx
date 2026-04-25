@@ -4,6 +4,8 @@ import { ContinueButton } from '../components/ContinueButton'
 import { dialogue } from '../data/dialogue'
 import { sortingQuestions } from '../data/sortingQuestions'
 import { useGameStore } from '../store'
+import { Backdrop } from '../art/Backdrop'
+import { Jesse } from '../art/Jesse'
 
 type Phase = 'asking' | 'thinking' | 'reveal'
 
@@ -30,8 +32,12 @@ export function SortingStage() {
   }, [phase])
 
   return (
-    <StageShell>
-      <div className="flex w-full max-w-2xl flex-col items-center gap-6 text-center">
+    <StageShell backdrop={<Backdrop name="great-hall" />}>
+      <Jesse
+        pose="default"
+        className="pointer-events-none absolute bottom-0 left-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+      />
+      <div className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-6 rounded border-4 border-hud-gold bg-black/70 p-6 text-center backdrop-blur-sm">
         {phase === 'asking' ? (
           <>
             <p

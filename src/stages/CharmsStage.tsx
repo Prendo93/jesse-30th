@@ -3,6 +3,8 @@ import { StageShell } from '../components/StageShell'
 import { ContinueButton } from '../components/ContinueButton'
 import { dialogue } from '../data/dialogue'
 import { useGameStore } from '../store'
+import { Backdrop } from '../art/Backdrop'
+import { Jesse } from '../art/Jesse'
 
 const BUTTON_COUNT = 4
 const STEP_MS = 600
@@ -100,8 +102,12 @@ export function CharmsStage() {
   )
 
   return (
-    <StageShell>
-      <div className="flex w-full max-w-xl flex-col items-center gap-8">
+    <StageShell backdrop={<Backdrop name="classroom" />}>
+      <Jesse
+        pose="wand"
+        className="pointer-events-none absolute bottom-0 left-4 z-10 h-[60%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+      />
+      <div className="relative z-20 flex w-full max-w-xl flex-col items-center gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm">
         <div data-testid="charms-state" className="hidden" {...stateAttrs} />
 
         <p className="font-body text-sm uppercase tracking-[0.3em] text-hud-gold/70">
