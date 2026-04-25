@@ -28,12 +28,20 @@ test('happy path: letter → sorting → potions → charms → flying → maze 
   })
   await page.getByRole('button', { name: /proceed/i }).click()
 
-  // Potions — pick the correct recipe so we exercise the Snape "correct" line.
+  // Connections — solve all four wizarding-world categories.
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'potions')
-  await page.getByTestId('ingredient-Hair (source unclear)').click()
-  await page.getByTestId('ingredient-A Bean').click()
-  await page.getByTestId('ingredient-Dusty Rock').click()
-  await page.getByRole('button', { name: /brew/i }).click()
+  const groups: string[][] = [
+    ['SIRIUS', 'BELLATRIX', 'ANDROMEDA', 'REGULUS'],
+    ['LILY', 'NARCISSA', 'PETUNIA', 'POPPY'],
+    ['DRACO', 'SCORPIUS', 'LUNA', 'MEROPE'],
+    ['MINERVA', 'POMONA', 'ARGUS', 'AURORA'],
+  ]
+  for (const group of groups) {
+    for (const word of group) {
+      await page.getByTestId(`connections-word-${word}`).click()
+    }
+    await page.getByTestId('connections-submit').click()
+  }
   await page.getByRole('button', { name: /continue/i }).click()
 
   // Charms — fail twice through to the result screen.

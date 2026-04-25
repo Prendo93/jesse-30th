@@ -27,12 +27,12 @@ export const dialogue = {
     intro: {
       speaker: 'SNAPE',
       body:
-        'Brew the Potion of Adequate Competence. Drag three ingredients into the cauldron. The order matters. Probably.',
+        'Sort these wizards into four groups. Try not to embarrass yourself. More than usual.',
     },
-    correct: 'Correct… though I fail to see why that matters.',
-    incorrect: 'Incorrect. Impressively so.',
-    correctOutcome: 'Potion of Mild Disappointment',
-    incorrectOutcome: 'Potion of Slightly Different Disappointment',
+    correct: 'Acceptable. Barely.',
+    incorrect: 'You have run out of attempts. As expected.',
+    correctOutcome: 'All four groups solved',
+    incorrectOutcome: 'Sorting Incomplete',
   },
   charms: {
     intro: {

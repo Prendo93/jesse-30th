@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useGameStore } from './store'
 import { LetterStage } from './stages/LetterStage'
 import { SortingStage } from './stages/SortingStage'
-import { PotionsStage } from './stages/PotionsStage'
+import { ConnectionsStage } from './stages/ConnectionsStage'
 import { CharmsStage } from './stages/CharmsStage'
 import { FlyingStage } from './stages/FlyingStage'
 import { MazeStage } from './maze/MazeStage'
@@ -39,7 +39,7 @@ function App() {
       case 'sorting':
         return <SortingStage />
       case 'potions':
-        return <PotionsStage />
+        return <ConnectionsStage />
       case 'charms':
         return <CharmsStage />
       case 'flying':
