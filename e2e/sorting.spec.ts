@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 const reachSortingStage = async (page: import('@playwright/test').Page) => {
   await page.goto('/')
   await page.getByTestId('letter-envelope').click()
-  await page.getByTestId('dialogue-box').click()
+  await page.getByTestId('letter-parchment').click()
   await page.getByRole('button', { name: /reluctantly accept/i }).click()
 }
 

@@ -9,7 +9,7 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   // Letter
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'letter')
   await page.getByTestId('letter-envelope').click()
-  await page.getByTestId('dialogue-box').click()
+  await page.getByTestId('letter-parchment').click()
   await page.getByRole('button', { name: /reluctantly accept/i }).click()
 
   // Sorting — answer every question, then wait for the Hufflepuff reveal.

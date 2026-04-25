@@ -1,25 +1,30 @@
 import { test, expect } from '@playwright/test'
 
-test('letter: open envelope, accept, advance to sorting', async ({ page }) => {
+test('letter: open envelope, read parchment, accept, advance to sorting', async ({
+  page,
+}) => {
   await page.goto('/')
 
   // The HUD shell renders on every stage.
   await expect(page.getByTestId('hud-bolt')).toBeVisible()
   await expect(page.getByTestId('hud-pause')).toBeVisible()
 
-  // Letter stage: envelope visible, no dialogue yet.
+  // Letter stage: sealed envelope visible, no parchment yet.
   await expect(page.getByTestId('letter-envelope')).toBeVisible()
-  await expect(page.getByTestId('dialogue-box')).toHaveCount(0)
+  await expect(page.getByTestId('letter-parchment')).toHaveCount(0)
 
-  // Click envelope: dialogue band appears with HOGWARTS speaker.
+  // Click envelope: parchment unfolds with handwritten content.
   await page.getByTestId('letter-envelope').click()
-  await expect(page.getByTestId('dialogue-box')).toBeVisible()
-  await expect(page.getByTestId('dialogue-speaker')).toHaveText('HOGWARTS')
+  await expect(page.getByTestId('letter-parchment')).toBeVisible()
+  await expect(page.getByTestId('letter-content')).toContainText(/Jesse/i)
 
-  // Skip the typewriter, then accept.
-  await page.getByTestId('dialogue-box').click()
+  // Skip the handwriting reveal, then accept.
+  await page.getByTestId('letter-parchment').click()
   await page.getByRole('button', { name: /reluctantly accept/i }).click()
 
-  // Lands on the sorting stage placeholder for now.
-  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'sorting')
+  // Lands on the sorting stage.
+  await expect(page.getByTestId('current-stage')).toHaveAttribute(
+    'data-stage',
+    'sorting',
+  )
 })

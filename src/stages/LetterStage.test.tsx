@@ -12,40 +12,37 @@ describe('LetterStage', () => {
     vi.useRealTimers()
   })
 
-  it('shows a closed envelope before any interaction', () => {
+  it('shows a sealed envelope before any interaction', () => {
     render(<LetterStage />)
     expect(screen.getByTestId('letter-envelope')).toBeInTheDocument()
-    expect(screen.queryByTestId('dialogue-box')).not.toBeInTheDocument()
+    expect(screen.queryByTestId('letter-parchment')).not.toBeInTheDocument()
   })
 
-  it('opens the envelope on click and reveals the acceptance dialogue', () => {
+  it('opens the envelope on click and reveals the parchment + handwritten content', () => {
     render(<LetterStage />)
     fireEvent.click(screen.getByTestId('letter-envelope'))
 
-    expect(screen.getByTestId('dialogue-box')).toBeInTheDocument()
-    expect(screen.getByTestId('dialogue-speaker')).toHaveTextContent(
-      'HOGWARTS',
-    )
+    expect(screen.getByTestId('letter-parchment')).toBeInTheDocument()
+    expect(screen.getByTestId('letter-content')).toBeInTheDocument()
   })
 
-  it('clicking "Reluctantly Accept" advances the store from letter to sorting', () => {
-    render(<LetterStage />)
-    fireEvent.click(screen.getByTestId('letter-envelope'))
-    fireEvent.click(screen.getByTestId('dialogue-box'))
-
-    fireEvent.click(screen.getByRole('button', { name: /reluctantly accept/i }))
-
-    expect(useGameStore.getState().stage).toBe('sorting')
-  })
-
-  it('only enables the accept button once the dialogue is fully revealed', () => {
+  it('disables the accept button until the writing has finished', () => {
     render(<LetterStage />)
     fireEvent.click(screen.getByTestId('letter-envelope'))
 
     const button = screen.getByRole('button', { name: /reluctantly accept/i })
     expect(button).toBeDisabled()
 
-    fireEvent.click(screen.getByTestId('dialogue-box'))
+    // Click on the parchment skips the handwriting to the end.
+    fireEvent.click(screen.getByTestId('letter-parchment'))
     expect(button).toBeEnabled()
+  })
+
+  it('clicking "Reluctantly Accept" advances the store to sorting', () => {
+    render(<LetterStage />)
+    fireEvent.click(screen.getByTestId('letter-envelope'))
+    fireEvent.click(screen.getByTestId('letter-parchment'))
+    fireEvent.click(screen.getByRole('button', { name: /reluctantly accept/i }))
+    expect(useGameStore.getState().stage).toBe('sorting')
   })
 })

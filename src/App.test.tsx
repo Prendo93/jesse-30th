@@ -20,7 +20,7 @@ describe('App router', () => {
   it('routes to the next stage when the store advances', () => {
     render(<App />)
     fireEvent.click(screen.getByTestId('letter-envelope'))
-    fireEvent.click(screen.getByTestId('dialogue-box'))
+    fireEvent.click(screen.getByTestId('letter-parchment'))
     fireEvent.click(screen.getByRole('button', { name: /reluctantly accept/i }))
     expect(useGameStore.getState().stage).toBe('sorting')
   })

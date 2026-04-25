@@ -23,6 +23,7 @@ export default {
         rune: ['"Cinzel"', 'serif'],
         body: ['"IM Fell English"', 'serif'],
         pixel: ['"VT323"', 'monospace'],
+        hand: ['"Caveat"', 'cursive'],
       },
       boxShadow: {
         'hud': 'inset 0 0 0 4px #1a0e06, inset 0 0 0 8px #e8c34a, inset 0 0 0 12px #1a0e06',
