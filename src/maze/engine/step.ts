@@ -98,7 +98,9 @@ function moveEntity(
   dtMs: number,
   tileMs: number,
 ): { tile: Vec; facing: Direction; sub: number; arrived: boolean } {
-  // If at a fresh tile (sub === 0), respect intent first.
+  // At the start of a tile traversal, prefer the intent direction if it's
+  // walkable from `tile`. Once we're partway through a tile we commit to
+  // `facing` so the visual interpolation doesn't snap.
   let dir: Direction = facing
   if (sub === 0 && intent) {
     const tryNext = stepWithTunnel(grid, tile, intent)
@@ -106,15 +108,24 @@ function moveEntity(
   }
   const candidate = stepWithTunnel(grid, tile, dir)
   if (!isWalkable(grid, candidate)) {
-    // Blocked — idle in place.
+    // Blocked — idle in place. Snap sub to 0 so the next tick re-checks
+    // intent immediately rather than waiting another tile.
     return { tile, facing: dir, sub: 0, arrived: false }
   }
   const advance = dtMs / tileMs
   const newSub = sub + advance
   if (newSub >= 1) {
+    // Arrived at the next tile. Re-evaluate intent now so the next
+    // traversal uses the latest input — without this, `sub` is rarely
+    // exactly 0 again and intent gets ignored for the rest of the run.
+    let nextFacing = dir
+    if (intent) {
+      const after = stepWithTunnel(grid, candidate, intent)
+      if (isWalkable(grid, after)) nextFacing = intent
+    }
     return {
       tile: candidate,
-      facing: dir,
+      facing: nextFacing,
       sub: Math.min(newSub - 1, 0.999),
       arrived: true,
     }

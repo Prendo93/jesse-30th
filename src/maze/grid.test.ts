@@ -129,4 +129,20 @@ describe('full MAZE_ASCII grid', () => {
     expect(pelletKeys(g).size).toBe(g.dotCount)
     expect(powerKeys(g).size).toBe(4)
   })
+
+  it('cup is reachable from the player spawn (no isolated chamber)', async () => {
+    const { bfsDistance } = await import('./engine/pathfind')
+    const g = parseGrid(MAZE_ASCII)
+    if (!g.cup) throw new Error('cup missing')
+    const dist = bfsDistance(g, g.playerSpawn, g.cup)
+    expect(dist).toBeLessThan(Infinity)
+  })
+
+  it('every power-up is reachable from the player spawn', async () => {
+    const { bfsDistance } = await import('./engine/pathfind')
+    const g = parseGrid(MAZE_ASCII)
+    for (const { pos } of g.powerTiles) {
+      expect(bfsDistance(g, g.playerSpawn, pos)).toBeLessThan(Infinity)
+    }
+  })
 })
