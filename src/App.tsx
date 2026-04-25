@@ -7,6 +7,7 @@ import { CharmsStage } from './stages/CharmsStage'
 import { FlyingStage } from './stages/FlyingStage'
 import { CeremonyStage } from './stages/CeremonyStage'
 import { GiftStage } from './stages/GiftStage'
+import { TransitionOverlay } from './components/TransitionOverlay'
 import { STAGES, type Stage } from './types'
 
 const isStage = (s: string): s is Stage =>
@@ -49,6 +50,7 @@ function App() {
     <>
       <div data-testid="current-stage" data-stage={stage} className="hidden" />
       {renderStage()}
+      <TransitionOverlay stage={stage} />
     </>
   )
 }
