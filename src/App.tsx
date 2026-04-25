@@ -4,6 +4,7 @@ import { LetterStage } from './stages/LetterStage'
 import { SortingStage } from './stages/SortingStage'
 import { PotionsStage } from './stages/PotionsStage'
 import { CharmsStage } from './stages/CharmsStage'
+import { FlyingStage } from './stages/FlyingStage'
 import { CeremonyStage } from './stages/CeremonyStage'
 import { GiftStage } from './stages/GiftStage'
 import { StageShell } from './components/StageShell'
@@ -40,7 +41,7 @@ function App() {
     case 'charms':
       return <CharmsStage />
     case 'flying':
-      return <PlaceholderStage name="flying" />
+      return <FlyingStage />
     case 'ceremony':
       return <CeremonyStage />
     case 'gift':
