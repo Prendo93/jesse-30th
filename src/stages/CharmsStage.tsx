@@ -100,7 +100,7 @@ export function CharmsStage() {
   )
 
   return (
-    <StageShell stageName="CHARMS">
+    <StageShell>
       <div className="flex w-full max-w-xl flex-col items-center gap-8">
         <div data-testid="charms-state" className="hidden" {...stateAttrs} />
 

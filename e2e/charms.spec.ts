@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test('charms: failing twice still advances to flying', async ({ page }) => {
   await page.goto('/?stage=charms')
-  await expect(page.getByTestId('stage-name')).toHaveText('CHARMS')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'charms')
 
   // Wait for the first show phase to finish (3 steps × 600ms + buffer).
   await expect(page.locator('[data-testid="charms-state"]')).toHaveAttribute(
@@ -45,5 +45,5 @@ test('charms: failing twice still advances to flying', async ({ page }) => {
     /We're choosing to move on/i,
   )
   await page.getByRole('button', { name: /continue/i }).click()
-  await expect(page.getByTestId('stage-name')).toHaveText('FLYING')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'flying')
 })

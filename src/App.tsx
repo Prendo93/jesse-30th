@@ -26,22 +26,31 @@ function App() {
     }
   }, [])
 
-  switch (stage) {
-    case 'letter':
-      return <LetterStage />
-    case 'sorting':
-      return <SortingStage />
-    case 'potions':
-      return <PotionsStage />
-    case 'charms':
-      return <CharmsStage />
-    case 'flying':
-      return <FlyingStage />
-    case 'ceremony':
-      return <CeremonyStage />
-    case 'gift':
-      return <GiftStage />
+  const renderStage = () => {
+    switch (stage) {
+      case 'letter':
+        return <LetterStage />
+      case 'sorting':
+        return <SortingStage />
+      case 'potions':
+        return <PotionsStage />
+      case 'charms':
+        return <CharmsStage />
+      case 'flying':
+        return <FlyingStage />
+      case 'ceremony':
+        return <CeremonyStage />
+      case 'gift':
+        return <GiftStage />
+    }
   }
+
+  return (
+    <>
+      <div data-testid="current-stage" data-stage={stage} className="hidden" />
+      {renderStage()}
+    </>
+  )
 }
 
 export default App

@@ -30,7 +30,7 @@ export function CeremonyStage() {
   }, [])
 
   return (
-    <StageShell stageName="CEREMONY">
+    <StageShell>
       <div className="flex w-full max-w-2xl flex-col items-center gap-6">
         <h2 className="font-rune text-3xl uppercase tracking-[0.4em] text-hud-gold">
           {dialogue.ceremony.title}

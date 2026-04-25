@@ -30,7 +30,7 @@ export function SortingStage() {
   }, [phase])
 
   return (
-    <StageShell stageName="SORTING">
+    <StageShell>
       <div className="flex w-full max-w-2xl flex-col items-center gap-6 text-center">
         {phase === 'asking' ? (
           <>

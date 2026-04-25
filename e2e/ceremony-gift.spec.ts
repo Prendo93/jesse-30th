@@ -4,7 +4,7 @@ test('ceremony tallies points and gift reveals the Cursed Child ticket', async (
   page,
 }) => {
   await page.goto('/?stage=ceremony')
-  await expect(page.getByTestId('stage-name')).toHaveText('CEREMONY')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'ceremony')
 
   await expect(page.getByTestId('house-row-Hufflepuff')).toContainText(
     'Hufflepuff',
@@ -21,7 +21,7 @@ test('ceremony tallies points and gift reveals the Cursed Child ticket', async (
   )
 
   await page.getByRole('button', { name: /claim reward/i }).click()
-  await expect(page.getByTestId('stage-name')).toHaveText('REWARD')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'gift')
 
   await page.getByTestId('gift-chest').click()
   const message = page.getByTestId('gift-message')

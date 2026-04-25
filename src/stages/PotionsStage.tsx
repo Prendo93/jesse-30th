@@ -41,7 +41,7 @@ export function PotionsStage() {
   }
 
   return (
-    <StageShell stageName="POTIONS">
+    <StageShell>
       <div className="grid w-full max-w-4xl gap-8 md:grid-cols-[1fr_auto_1fr]">
         <section>
           <h3 className="mb-3 font-rune text-xl uppercase tracking-[0.3em] text-hud-gold">

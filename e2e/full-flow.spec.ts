@@ -7,13 +7,13 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   await page.goto('/')
 
   // Letter
-  await expect(page.getByTestId('stage-name')).toHaveText('LETTER')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'letter')
   await page.getByTestId('letter-envelope').click()
   await page.getByTestId('dialogue-box').click()
   await page.getByRole('button', { name: /reluctantly accept/i }).click()
 
   // Sorting — answer every question, then wait for the Hufflepuff reveal.
-  await expect(page.getByTestId('stage-name')).toHaveText('SORTING')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'sorting')
   for (let i = 0; i < sortingQuestions.length; i += 1) {
     await page.getByTestId('sorting-answer').first().click()
   }
@@ -23,7 +23,7 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   await page.getByRole('button', { name: /proceed/i }).click()
 
   // Potions — pick the correct recipe so we exercise the Snape "correct" line.
-  await expect(page.getByTestId('stage-name')).toHaveText('POTIONS')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'potions')
   await page.getByTestId('ingredient-Hair (source unclear)').click()
   await page.getByTestId('ingredient-A Bean').click()
   await page.getByTestId('ingredient-Dusty Rock').click()
@@ -31,7 +31,7 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   await page.getByRole('button', { name: /continue/i }).click()
 
   // Charms — fail twice through to the result screen.
-  await expect(page.getByTestId('stage-name')).toHaveText('CHARMS')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'charms')
   await expect(page.getByTestId('charms-state')).toHaveAttribute(
     'data-phase',
     'input',
@@ -60,19 +60,19 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   await page.getByRole('button', { name: /continue/i }).click()
 
   // Flying — single click is enough.
-  await expect(page.getByTestId('stage-name')).toHaveText('FLYING')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'flying')
   await page.getByRole('button', { name: /mount broom/i }).click()
   await page.getByRole('button', { name: /continue/i }).click()
 
   // Ceremony — wait for twist, then claim reward.
-  await expect(page.getByTestId('stage-name')).toHaveText('CEREMONY')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'ceremony')
   await expect(page.getByTestId('ceremony-twist')).toBeVisible({
     timeout: 5_000,
   })
   await page.getByRole('button', { name: /claim reward/i }).click()
 
   // Gift — open chest, confirm Jesse + Cursed Child.
-  await expect(page.getByTestId('stage-name')).toHaveText('REWARD')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'gift')
   await page.getByTestId('gift-chest').click()
   const message = page.getByTestId('gift-message')
   await expect(message).toContainText('Jesse')

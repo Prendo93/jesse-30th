@@ -21,5 +21,5 @@ test('letter: open envelope, accept, advance to sorting', async ({ page }) => {
   await page.getByRole('button', { name: /reluctantly accept/i }).click()
 
   // Lands on the sorting stage placeholder for now.
-  await expect(page.getByTestId('stage-name')).toHaveText('SORTING')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'sorting')
 })

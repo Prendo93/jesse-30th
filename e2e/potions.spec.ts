@@ -5,7 +5,7 @@ test.describe('potions', () => {
     page,
   }) => {
     await page.goto('/?stage=potions')
-    await expect(page.getByTestId('stage-name')).toHaveText('POTIONS')
+    await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'potions')
 
     await page.getByTestId('ingredient-Hair (source unclear)').click()
     await page.getByTestId('ingredient-A Bean').click()
@@ -19,7 +19,7 @@ test.describe('potions', () => {
     await expect(page.getByTestId('snape-line')).toContainText('Correct')
 
     await page.getByRole('button', { name: /continue/i }).click()
-    await expect(page.getByTestId('stage-name')).toHaveText('CHARMS')
+    await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'charms')
   })
 
   test('wrong recipe still advances after Snape\'s scorn', async ({ page }) => {
@@ -34,6 +34,6 @@ test.describe('potions', () => {
     )
     await expect(page.getByTestId('snape-line')).toContainText('Incorrect')
     await page.getByRole('button', { name: /continue/i }).click()
-    await expect(page.getByTestId('stage-name')).toHaveText('CHARMS')
+    await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'charms')
   })
 })

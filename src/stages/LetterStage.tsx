@@ -12,7 +12,7 @@ export function LetterStage() {
   const copy = dialogue.letter
 
   return (
-    <StageShell stageName="LETTER">
+    <StageShell>
       <div className="flex flex-col items-center gap-12">
         {!opened ? (
           <button

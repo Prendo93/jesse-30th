@@ -23,12 +23,12 @@ describe('StageShell', () => {
     expect(screen.getByTestId('hud-pause')).toBeInTheDocument()
   })
 
-  it('exposes a stage-name slot when provided (e.g. "POTIONS")', () => {
+  it('does not render a visible stage-name banner', () => {
     render(
-      <StageShell stageName="POTIONS">
+      <StageShell>
         <span />
       </StageShell>,
     )
-    expect(screen.getByTestId('stage-name')).toHaveTextContent('POTIONS')
+    expect(screen.queryByTestId('stage-name')).not.toBeInTheDocument()
   })
 })

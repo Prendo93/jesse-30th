@@ -7,7 +7,7 @@ export function GiftStage() {
   const copy = dialogue.gift
 
   return (
-    <StageShell stageName="REWARD">
+    <StageShell>
       <div className="flex w-full max-w-2xl flex-col items-center gap-8 text-center">
         {!opened ? (
           <button

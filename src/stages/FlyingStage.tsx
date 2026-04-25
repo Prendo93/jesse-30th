@@ -49,7 +49,7 @@ export function FlyingStage() {
       : copy.fail
 
   return (
-    <StageShell stageName="FLYING">
+    <StageShell>
       <div className="flex w-full max-w-md flex-col items-center gap-6">
         <div data-testid="flying-state" data-position={position} className="hidden" />
 
