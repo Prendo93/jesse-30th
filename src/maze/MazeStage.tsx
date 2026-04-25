@@ -101,7 +101,11 @@ export function MazeStage({ instant = false }: Props) {
 
   return (
     <StageShell backdrop={<Backdrop name="hedgemaze" />}>
-      <div className="relative z-20 flex flex-col items-center gap-3">
+      {/* touch-none stops the browser from interpreting swipes as page
+          scroll or zoom on this stage; user-select-none keeps long
+          press from triggering text selection. The maze fits in the
+          viewport once scaled, so we don't need scroll here. */}
+      <div className="relative z-20 flex w-full max-w-[540px] flex-col items-center gap-3 touch-none select-none">
         {state.phase === 'gameover' ? (
           <div
             data-testid="maze-gameover"
@@ -116,15 +120,14 @@ export function MazeStage({ instant = false }: Props) {
           </div>
         ) : null}
         <div
-          className="relative border-4 border-hud-gold bg-black/70 shadow-[6px_6px_0_#000] backdrop-blur-sm"
-          style={{ width: W, height: H }}
+          className="relative aspect-square w-full max-w-[504px] border-4 border-hud-gold bg-black/70 shadow-[6px_6px_0_#000] backdrop-blur-sm"
           data-testid="maze-board"
         >
           <svg
-            width={W}
-            height={H}
             viewBox={`0 0 ${W} ${H}`}
+            preserveAspectRatio="xMidYMid meet"
             xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0 h-full w-full"
           >
             {/* Walls */}
             {grid.tiles.map((row, y) =>
