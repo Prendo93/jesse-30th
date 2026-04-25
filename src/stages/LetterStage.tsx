@@ -6,13 +6,16 @@ import { useGameStore } from '../store'
 import { Backdrop } from '../art/Backdrop'
 import { useTypewriter } from '../hooks/useTypewriter'
 
-const LETTER_LINES = [
+// '\f' is an invisible pause sentinel — see useTypewriter. We insert
+// exactly one, between "Wizardry." and "(Standards…", to land that
+// parenthetical with comic timing.
+const FULL_LETTER = [
   'Dear Jesse,',
   '',
   'We are pleased to inform you',
   'that you have been accepted to',
   'Hogwarts School of Witchcraft',
-  'and Wizardry.',
+  'and Wizardry.\f',
   '',
   '(Standards have recently been',
   'lowered, considerably.)',
@@ -20,9 +23,7 @@ const LETTER_LINES = [
   'Term begins immediately.',
   '',
   '— Prof. M. McGonagall',
-] as const
-
-const FULL_LETTER = LETTER_LINES.join('\n')
+].join('\n')
 
 export function LetterStage() {
   const [opened, setOpened] = useState(false)
@@ -60,13 +61,14 @@ export function LetterStage() {
           </motion.button>
         ) : (
           <Parchment text={shown} skip={skipToEnd}>
-            <ContinueButton
-              data-testid="letter-accept"
-              disabled={!isComplete}
-              onClick={() => advance()}
-            >
-              Reluctantly Accept
-            </ContinueButton>
+            {isComplete ? (
+              <ContinueButton
+                data-testid="letter-accept"
+                onClick={() => advance()}
+              >
+                Reluctantly Accept
+              </ContinueButton>
+            ) : null}
           </Parchment>
         )}
       </div>

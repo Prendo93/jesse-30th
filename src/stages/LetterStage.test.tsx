@@ -26,16 +26,20 @@ describe('LetterStage', () => {
     expect(screen.getByTestId('letter-content')).toBeInTheDocument()
   })
 
-  it('disables the accept button until the writing has finished', () => {
+  it('does not show the accept button until the writing has finished', () => {
     render(<LetterStage />)
     fireEvent.click(screen.getByTestId('letter-envelope'))
 
-    const button = screen.getByRole('button', { name: /reluctantly accept/i })
-    expect(button).toBeDisabled()
+    expect(
+      screen.queryByRole('button', { name: /reluctantly accept/i }),
+    ).not.toBeInTheDocument()
 
-    // Click on the parchment skips the handwriting to the end.
+    // Click on the parchment skips the handwriting to the end, which
+    // mounts the button.
     fireEvent.click(screen.getByTestId('letter-parchment'))
-    expect(button).toBeEnabled()
+    expect(
+      screen.getByRole('button', { name: /reluctantly accept/i }),
+    ).toBeInTheDocument()
   })
 
   it('clicking "Reluctantly Accept" advances the store to sorting', () => {

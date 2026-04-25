@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * Reveals `text` one character at a time. When the cursor crosses a
- * paragraph break (the second '\n' of a `\n\n` sequence), the next
- * character waits `paragraphPauseMs` milliseconds before it appears.
+ * Reveals `text` one character at a time. A '\f' (form-feed) character
+ * acts as an invisible pause sentinel: when the cursor reaches one, it
+ * is consumed (never rendered) and the next visible character waits
+ * `paragraphPauseMs` milliseconds before appearing.
  */
 export function useTypewriter(
   text: string,
@@ -21,29 +22,38 @@ export function useTypewriter(
     }
     setShown('')
 
+    const visible = text.replace(/\f/g, '')
     let i = 0
     let cancelled = false
     let timer: ReturnType<typeof setTimeout> | null = null
 
+    const visibleSoFar = () => text.slice(0, i).replace(/\f/g, '')
+
+    const scheduleNext = () => {
+      if (i >= text.length) return
+      // Peek: if the next char is the pause sentinel, swallow it and
+      // schedule the following character with the pause delay instead
+      // of the per-char delay.
+      if (text[i] === '\f') {
+        i += 1
+        if (i >= text.length) return
+        timer = setTimeout(tick, paragraphPauseMs)
+      } else {
+        timer = setTimeout(tick, charMs)
+      }
+    }
+
     const tick = () => {
       if (cancelled) return
       if (skipRef.current) {
-        setShown(text)
+        setShown(visible)
         return
       }
-      i += 1
-      const slice = text.slice(0, i)
-      setShown(slice)
       if (i >= text.length) return
 
-      // If we've just emitted the second of a paired '\n\n', pause longer
-      // before the next character.
-      const justEmitted = text[i - 1]
-      const prev = text[i - 2]
-      const isParagraphBreak = justEmitted === '\n' && prev === '\n'
-      const delay = isParagraphBreak ? paragraphPauseMs : charMs
-
-      timer = setTimeout(tick, delay)
+      i += 1
+      setShown(visibleSoFar())
+      scheduleNext()
     }
 
     timer = setTimeout(tick, charMs)
@@ -54,12 +64,14 @@ export function useTypewriter(
     }
   }, [text, charMs, paragraphPauseMs])
 
+  const visible = text.replace(/\f/g, '')
+
   const skipToEnd = () => {
     skipRef.current = true
-    setShown(text)
+    setShown(visible)
   }
 
-  const isComplete = shown === text && text.length > 0
+  const isComplete = shown === visible && visible.length > 0
 
   return { shown, isComplete, skipToEnd }
 }
