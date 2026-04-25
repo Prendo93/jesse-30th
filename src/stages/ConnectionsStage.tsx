@@ -18,6 +18,15 @@ import { Jesse, type JesseExpression } from '../art/Jesse'
 
 type Phase = 'play' | 'won' | 'lost'
 
+function shuffle<T>(arr: readonly T[]): T[] {
+  const out = [...arr]
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
+
 export function ConnectionsStage() {
   const advance = useGameStore((s) => s.advance)
   const markComplete = useGameStore((s) => s.markComplete)
@@ -26,6 +35,7 @@ export function ConnectionsStage() {
   const [mistakes, setMistakes] = useState(0)
   const [message, setMessage] = useState<string | null>(null)
   const [shake, setShake] = useState(0)
+  const [order, setOrder] = useState<string[]>(() => shuffle(ALL_WORDS))
   const [expression, setExpression] = useState<JesseExpression>('neutral')
   const copy = dialogue.potions
 
@@ -39,7 +49,7 @@ export function ConnectionsStage() {
   const solvedWords = new Set(
     solved.flatMap((k) => categoryByKey(k).words),
   )
-  const remaining = ALL_WORDS.filter((w) => !solvedWords.has(w))
+  const remaining = order.filter((w) => !solvedWords.has(w))
 
   const toggle = (word: string) => {
     if (phase !== 'play') return
@@ -72,8 +82,10 @@ export function ConnectionsStage() {
     advance()
   }
 
+  const onDeselect = () => setSelected([])
+
   const onShuffle = () => {
-    // Selection clear acts as a "shuffle/reset selection".
+    setOrder(shuffle(order))
     setSelected([])
   }
 
@@ -87,16 +99,33 @@ export function ConnectionsStage() {
         className="pointer-events-none absolute bottom-2 right-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 flex w-full max-w-3xl flex-col items-center gap-4 rounded border-4 border-hud-gold bg-black/75 p-6 backdrop-blur-sm">
-        <header className="flex w-full items-center justify-between">
-          <h2 className="font-rune text-xl uppercase tracking-[0.3em] text-hud-gold">
-            Connections — Wizarding World
-          </h2>
-          <span
-            data-testid="connections-mistakes"
-            className="font-rune text-sm uppercase tracking-[0.2em] text-hud-ember"
+        <header className="flex w-full flex-col items-stretch gap-2">
+          <div className="flex items-center justify-between">
+            <h2 className="font-rune text-xl uppercase tracking-[0.3em] text-hud-gold">
+              Connections — Wizarding World
+            </h2>
+            <span
+              data-testid="connections-mistakes"
+              className="font-rune text-sm uppercase tracking-[0.2em] text-hud-ember"
+            >
+              Mistakes: {mistakes}/{MAX_MISTAKES}
+            </span>
+          </div>
+          {/* Snape intro: why this counts as a class */}
+          <div
+            data-testid="connections-intro"
+            className="border-l-4 border-hud-ember bg-black/50 px-3 py-2 text-left"
           >
-            Mistakes: {mistakes}/{MAX_MISTAKES}
-          </span>
+            <p className="font-rune text-xs uppercase tracking-[0.3em] text-hud-ember">
+              {copy.intro.speaker}
+            </p>
+            <p className="font-body text-sm italic text-torch-50/90">
+              “{copy.intro.body}”
+            </p>
+            <p className="mt-2 font-body text-sm leading-snug text-torch-50/80">
+              {copy.why}
+            </p>
+          </div>
         </header>
 
         {/* Solved category rows */}
@@ -126,9 +155,7 @@ export function ConnectionsStage() {
           <motion.div
             key={shake}
             animate={
-              shake > 0
-                ? { x: [0, -8, 8, -6, 6, -3, 3, 0] }
-                : { x: 0 }
+              shake > 0 ? { x: [0, -8, 8, -6, 6, -3, 3, 0] } : { x: 0 }
             }
             transition={{ duration: 0.4 }}
             className="grid w-full grid-cols-4 gap-2"
@@ -171,11 +198,21 @@ export function ConnectionsStage() {
         ) : null}
 
         {phase === 'play' ? (
-          <div className="flex gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             <button
               type="button"
+              data-testid="connections-shuffle"
               onClick={onShuffle}
-              className="border-2 border-hud-gold/60 bg-hud-stone px-4 py-2 font-rune text-sm uppercase tracking-[0.2em] text-torch-50/80 transition hover:bg-hud-ember/30"
+              className="border-2 border-hud-gold/60 bg-hud-stone px-4 py-2 font-rune text-sm uppercase tracking-[0.2em] text-torch-50 transition hover:bg-hud-ember/30"
+            >
+              {copy.shuffle}
+            </button>
+            <button
+              type="button"
+              data-testid="connections-deselect"
+              onClick={onDeselect}
+              disabled={selected.length === 0}
+              className="border-2 border-hud-gold/60 bg-hud-stone px-4 py-2 font-rune text-sm uppercase tracking-[0.2em] text-torch-50/80 transition hover:bg-hud-ember/30 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Deselect
             </button>

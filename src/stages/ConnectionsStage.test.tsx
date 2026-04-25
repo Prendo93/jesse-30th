@@ -28,6 +28,69 @@ describe('ConnectionsStage', () => {
     expect(screen.getByTestId('connections-submit')).toBeDisabled()
   })
 
+  it('shows the Snape intro explaining why the class must be passed', () => {
+    render(<ConnectionsStage />)
+    const intro = screen.getByTestId('connections-intro')
+    expect(intro).toHaveTextContent('SNAPE')
+    expect(intro).toHaveTextContent(/Most Ancient and Most Noble House of Black/)
+    expect(intro).toHaveTextContent(/four kindreds/)
+  })
+
+  it('shuffles the word grid (not in canonical category order)', () => {
+    // Math.random is mocked to a fixed sequence so the shuffle is
+    // deterministic but not the canonical [Black, flowers, astronomy, staff]
+    // order.
+    const seq = [0.9, 0.1, 0.7, 0.3, 0.5, 0.2, 0.8, 0.4, 0.6, 0.05, 0.55, 0.35, 0.25, 0.65, 0.15]
+    let i = 0
+    vi.spyOn(Math, 'random').mockImplementation(() => seq[i++ % seq.length])
+
+    render(<ConnectionsStage />)
+    const buttons = screen.getAllByRole('button')
+    const wordButtons = buttons.filter((b) =>
+      b.getAttribute('data-testid')?.startsWith('connections-word-'),
+    )
+    const renderedOrder = wordButtons.map((b) => b.textContent?.trim())
+
+    // The canonical order would put Sirius/Bellatrix/Andromeda/Regulus first.
+    // The shuffled order should put something different first.
+    expect(renderedOrder[0]).not.toBe('SIRIUS')
+    vi.restoreAllMocks()
+  })
+
+  it('shuffle button reorders the remaining words', () => {
+    render(<ConnectionsStage />)
+    const before = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('data-testid')?.startsWith('connections-word-'))
+      .map((b) => b.textContent?.trim())
+      .join(',')
+
+    // Mock Math.random for the shuffle click to a different sequence.
+    vi.spyOn(Math, 'random').mockReturnValue(0.123)
+    fireEvent.click(screen.getByTestId('connections-shuffle'))
+
+    const after = screen
+      .getAllByRole('button')
+      .filter((b) => b.getAttribute('data-testid')?.startsWith('connections-word-'))
+      .map((b) => b.textContent?.trim())
+      .join(',')
+
+    expect(after).not.toBe(before)
+    vi.restoreAllMocks()
+  })
+
+  it('shuffle button clears the current selection', () => {
+    render(<ConnectionsStage />)
+    click('SIRIUS')
+    expect(
+      screen.getByTestId('connections-word-SIRIUS').getAttribute('data-selected'),
+    ).toBe('true')
+    fireEvent.click(screen.getByTestId('connections-shuffle'))
+    expect(
+      screen.getByTestId('connections-word-SIRIUS').getAttribute('data-selected'),
+    ).toBe('false')
+  })
+
   it('selecting four words enables submit', () => {
     render(<ConnectionsStage />)
     click('SIRIUS')

@@ -27,8 +27,11 @@ export const dialogue = {
     intro: {
       speaker: 'SNAPE',
       body:
-        'Sort these wizards into four groups. Try not to embarrass yourself. More than usual.',
+        'A wizard who cannot place a name within a lineage is a wizard who cannot be trusted with a wand.',
     },
+    why:
+      'Today you will sort sixteen names into four kindreds: the Most Ancient and Most Noble House of Black; characters whose names belong to flowers; first names plucked from the night sky — exclusive of the Black family, who hoard the constellations; and members of the Hogwarts staff whose parents reached for Greco-Roman antiquity. Identify all four groups before exhausting your attempts, or do not bother coming back.',
+    shuffle: 'Shuffle',
     correct: 'Acceptable. Barely.',
     incorrect: 'You have run out of attempts. As expected.',
     correctOutcome: 'All four groups solved',
