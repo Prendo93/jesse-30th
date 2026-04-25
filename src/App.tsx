@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useGameStore } from './store'
 import { LetterStage } from './stages/LetterStage'
 import { SortingStage } from './stages/SortingStage'
@@ -16,6 +16,7 @@ const isStage = (s: string): s is Stage =>
 
 function App() {
   const stage = useGameStore((s) => s.stage)
+  const [mazeInstant, setMazeInstant] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -25,6 +26,9 @@ function App() {
     }
     if (params.has('reset')) {
       useGameStore.getState().reset()
+    }
+    if (params.get('maze') === 'instant') {
+      setMazeInstant(true)
     }
   }, [])
 
@@ -41,7 +45,7 @@ function App() {
       case 'flying':
         return <FlyingStage />
       case 'maze':
-        return <MazeStage />
+        return <MazeStage instant={mazeInstant} />
       case 'ceremony':
         return <CeremonyStage />
       case 'gift':

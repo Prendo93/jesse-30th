@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test'
 import { sortingQuestions } from '../src/data/sortingQuestions'
 
-test('happy path: letter → sorting → potions → charms → flying → ceremony → gift', async ({
+test('happy path: letter → sorting → potions → charms → flying → maze → ceremony → gift', async ({
   page,
 }) => {
-  await page.goto('/')
+  // ?maze=instant short-circuits the arcade play so the e2e doesn't
+  // depend on RNG/timing of the Pac-Man-style maze.
+  await page.goto('/?maze=instant')
 
   // Letter
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'letter')
@@ -64,9 +66,8 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   await page.getByRole('button', { name: /mount broom/i }).click()
   await page.getByRole('button', { name: /continue/i }).click()
 
-  // Maze — placeholder for now; skip via the dev affordance.
+  // Maze — instant-win mode auto-advances.
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'maze')
-  await page.getByTestId('maze-skip').click()
 
   // Ceremony — wait for twist, then claim reward.
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'ceremony')
