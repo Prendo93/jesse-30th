@@ -140,7 +140,7 @@ describe('ConnectionsStage', () => {
     )
   })
 
-  it('solving all four categories shows the won outcome and continues to charms', () => {
+  it('solving all four categories shows the won outcome and continues to riddle', () => {
     render(<ConnectionsStage />)
 
     for (const cat of CONNECTIONS_CATEGORIES) {
@@ -153,10 +153,10 @@ describe('ConnectionsStage', () => {
     )
     fireEvent.click(screen.getByRole('button', { name: /continue/i }))
     expect(useGameStore.getState().player.potionsDone).toBe(true)
-    expect(useGameStore.getState().stage).toBe('charms')
+    expect(useGameStore.getState().stage).toBe('riddle')
   })
 
-  it('hitting MAX_MISTAKES still advances to charms', () => {
+  it('hitting MAX_MISTAKES still advances to riddle', () => {
     render(<ConnectionsStage />)
 
     for (let i = 0; i < 4; i += 1) {
@@ -172,6 +172,6 @@ describe('ConnectionsStage', () => {
       /Incomplete/i,
     )
     fireEvent.click(screen.getByRole('button', { name: /continue/i }))
-    expect(useGameStore.getState().stage).toBe('charms')
+    expect(useGameStore.getState().stage).toBe('riddle')
   })
 })

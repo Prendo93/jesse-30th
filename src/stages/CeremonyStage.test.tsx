@@ -18,13 +18,12 @@ describe('CeremonyStage', () => {
 
   it('renders the four houses with HUFFLEPUFF score equal to classes survived', () => {
     useGameStore.getState().markComplete('potionsDone')
-    useGameStore.getState().markComplete('charmsDone')
-    useGameStore.getState().markComplete('flyingDone')
+    useGameStore.getState().markComplete('riddleDone')
     useGameStore.getState().markComplete('mazeDone')
     render(<CeremonyStage />)
     const huffle = screen.getByTestId('house-row-Hufflepuff')
     expect(huffle).toHaveTextContent('Hufflepuff')
-    expect(huffle).toHaveTextContent('4')
+    expect(huffle).toHaveTextContent('3')
   })
 
   it('rival houses each have a score of at least 80', () => {

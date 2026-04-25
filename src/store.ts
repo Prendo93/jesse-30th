@@ -5,8 +5,7 @@ import { STAGES } from './types'
 const initialPlayer: Player = {
   house: 'Hufflepuff',
   potionsDone: false,
-  charmsDone: false,
-  flyingDone: false,
+  riddleDone: false,
   mazeDone: false,
 }
 

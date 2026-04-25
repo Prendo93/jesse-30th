@@ -13,21 +13,26 @@ describe('useGameStore', () => {
     expect(player).toEqual({
       house: 'Hufflepuff',
       potionsDone: false,
-      charmsDone: false,
-      flyingDone: false,
+      riddleDone: false,
       mazeDone: false,
     })
   })
 
-  it('STAGES inserts maze between flying and ceremony', () => {
-    const flyingIdx = STAGES.indexOf('flying')
-    const mazeIdx = STAGES.indexOf('maze')
-    const ceremonyIdx = STAGES.indexOf('ceremony')
-    expect(mazeIdx).toBe(flyingIdx + 1)
-    expect(ceremonyIdx).toBe(mazeIdx + 1)
+  it('STAGES order: letter → sorting → potions → riddle → maze → ceremony → gift', () => {
+    expect([...STAGES]).toEqual([
+      'letter',
+      'sorting',
+      'potions',
+      'riddle',
+      'maze',
+      'ceremony',
+      'gift',
+    ])
   })
 
-  it('markComplete supports the mazeDone flag', () => {
+  it('markComplete supports the new class flags', () => {
+    useGameStore.getState().markComplete('riddleDone')
+    expect(useGameStore.getState().player.riddleDone).toBe(true)
     useGameStore.getState().markComplete('mazeDone')
     expect(useGameStore.getState().player.mazeDone).toBe(true)
   })
@@ -46,14 +51,11 @@ describe('useGameStore', () => {
   it('markComplete flips the matching class flag without touching others', () => {
     useGameStore.getState().markComplete('potionsDone')
     expect(useGameStore.getState().player.potionsDone).toBe(true)
-    expect(useGameStore.getState().player.charmsDone).toBe(false)
-    expect(useGameStore.getState().player.flyingDone).toBe(false)
+    expect(useGameStore.getState().player.riddleDone).toBe(false)
+    expect(useGameStore.getState().player.mazeDone).toBe(false)
 
-    useGameStore.getState().markComplete('charmsDone')
-    expect(useGameStore.getState().player.charmsDone).toBe(true)
-
-    useGameStore.getState().markComplete('flyingDone')
-    expect(useGameStore.getState().player.flyingDone).toBe(true)
+    useGameStore.getState().markComplete('riddleDone')
+    expect(useGameStore.getState().player.riddleDone).toBe(true)
   })
 
   it('house is always Hufflepuff and cannot be changed by advancing', () => {

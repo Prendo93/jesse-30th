@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { sortingQuestions } from '../src/data/sortingQuestions'
 
-test('happy path: letter → sorting → potions → charms → flying → maze → ceremony → gift', async ({
+test('happy path: letter → sorting → potions → riddle → maze → ceremony → gift', async ({
   page,
 }, testInfo) => {
   // 42 sorting questions + a 13s deliberation push the full happy-path
@@ -44,38 +44,10 @@ test('happy path: letter → sorting → potions → charms → flying → maze 
   }
   await page.getByRole('button', { name: /continue/i }).click()
 
-  // Charms — fail twice through to the result screen.
-  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'charms')
-  await expect(page.getByTestId('charms-state')).toHaveAttribute(
-    'data-phase',
-    'input',
-    { timeout: 5_000 },
-  )
-  for (let i = 0; i < 2; i += 1) {
-    const seq = await page
-      .getByTestId('charms-state')
-      .getAttribute('data-sequence')
-    const expected = Number(seq!.split(',')[0])
-    const wrong = (expected + 1) % 4
-    await page.getByTestId(`charm-button-${wrong}`).click()
-    await page.waitForFunction(() => {
-      const el = document.querySelector('[data-testid="charms-state"]')
-      const phase = el?.getAttribute('data-phase')
-      return phase === 'input' || phase === 'result'
-    })
-    if (
-      (await page
-        .getByTestId('charms-state')
-        .getAttribute('data-phase')) === 'result'
-    ) {
-      break
-    }
-  }
-  await page.getByRole('button', { name: /continue/i }).click()
-
-  // Flying — single click is enough.
-  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'flying')
-  await page.getByRole('button', { name: /mount broom/i }).click()
+  // Riddle — Peeves's cryptic clue. Answer is ABERFORTH.
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'riddle')
+  await page.getByTestId('riddle-input').fill('Aberforth')
+  await page.getByTestId('riddle-submit').click()
   await page.getByRole('button', { name: /continue/i }).click()
 
   // Maze — instant-win mode auto-advances.

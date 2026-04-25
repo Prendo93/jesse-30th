@@ -37,22 +37,19 @@ export const dialogue = {
     correctOutcome: 'All four groups solved',
     incorrectOutcome: 'Sorting Incomplete',
   },
-  charms: {
+  riddle: {
     intro: {
-      speaker: 'FLITWICK',
-      body: 'Repeat the wand pattern. Ideally before I lose interest.',
+      speaker: 'PEEVES',
+      body:
+        "Oooh, ickle firstie wants to pass! Not before old Peevesy here. Solve my riddle or sit in the corridor forever!",
     },
-    success: 'You cast Lumos… illuminating an area you are not in.',
-    failure: "You cast something. We're choosing to move on.",
-  },
-  flying: {
-    intro: {
-      speaker: 'HOOCH',
-      body: 'Mount your broom when the meter feels right. It will not.',
-    },
-    perfect: 'You achieved a hover of approximately 3cm.',
-    okay: 'The broom acknowledges your presence.',
-    fail: 'You remain grounded. Spiritually and physically.',
+    clue: 'Welsh estuary leads forth to kid enthusiast.',
+    instructions:
+      'Type the answer below. Peeves will not let you past until you guess it.',
+    wrong: 'PEEVES cackles: "Wrong! Wrong! Wrongity-wrong!"',
+    correct:
+      'PEEVES (sulking): "Lucky guess. LUCKY GUESS! …fine. Pass through. Boring."',
+    answer: 'ABERFORTH',
   },
   maze: {
     intro: {

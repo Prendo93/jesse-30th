@@ -19,8 +19,7 @@ export function CeremonyStage() {
   // it actually required winning.
   const hufflepuffScore =
     (player.potionsDone ? 1 : 0) +
-    (player.charmsDone ? 1 : 0) +
-    (player.flyingDone ? 1 : 0) +
+    (player.riddleDone ? 1 : 0) +
     (player.mazeDone ? 1 : 0)
 
   const rivalScores = useMemo(

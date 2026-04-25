@@ -2,8 +2,7 @@ export const STAGES = [
   'letter',
   'sorting',
   'potions',
-  'charms',
-  'flying',
+  'riddle',
   'maze',
   'ceremony',
   'gift',
@@ -14,8 +13,7 @@ export type Stage = (typeof STAGES)[number]
 export type Player = {
   house: 'Hufflepuff'
   potionsDone: boolean
-  charmsDone: boolean
-  flyingDone: boolean
+  riddleDone: boolean
   mazeDone: boolean
 }
 

@@ -3,8 +3,7 @@ import { useGameStore } from './store'
 import { LetterStage } from './stages/LetterStage'
 import { SortingStage } from './stages/SortingStage'
 import { ConnectionsStage } from './stages/ConnectionsStage'
-import { CharmsStage } from './stages/CharmsStage'
-import { FlyingStage } from './stages/FlyingStage'
+import { RiddleStage } from './stages/RiddleStage'
 import { MazeStage } from './maze/MazeStage'
 import { CeremonyStage } from './stages/CeremonyStage'
 import { GiftStage } from './stages/GiftStage'
@@ -40,10 +39,8 @@ function App() {
         return <SortingStage />
       case 'potions':
         return <ConnectionsStage />
-      case 'charms':
-        return <CharmsStage />
-      case 'flying':
-        return <FlyingStage />
+      case 'riddle':
+        return <RiddleStage />
       case 'maze':
         return <MazeStage instant={mazeInstant} />
       case 'ceremony':

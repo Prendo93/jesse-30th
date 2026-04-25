@@ -33,18 +33,11 @@ const STAGE_FANFARE: Record<Stage, Fanfare> = {
     chub: 1,
     house: 'Hufflepuff',
   },
-  charms: {
-    caption: 'Charms classroom',
-    line: 'Wave the wand. Mean it. Almost.',
-    pose: 'wand',
+  riddle: {
+    caption: 'A Corridor, A Poltergeist',
+    line: 'Peeves is blocking the way. Of course he is.',
+    pose: 'reading',
     chub: 2,
-    house: 'Hufflepuff',
-  },
-  flying: {
-    caption: 'Out to the Pitch',
-    line: 'The brooms are mostly cooperative today.',
-    pose: 'broom',
-    chub: 3,
     house: 'Hufflepuff',
   },
   maze: {
