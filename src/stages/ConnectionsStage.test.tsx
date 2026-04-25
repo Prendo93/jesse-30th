@@ -155,7 +155,7 @@ describe('ConnectionsStage', () => {
     expect(useGameStore.getState().stage).toBe('riddle')
   })
 
-  it('hitting MAX_MISTAKES still advances to riddle', () => {
+  it('hitting MAX_MISTAKES shows a game over with a time-turner retry', () => {
     render(<ConnectionsStage />)
 
     for (let i = 0; i < 4; i += 1) {
@@ -168,9 +168,13 @@ describe('ConnectionsStage', () => {
     }
 
     expect(screen.getByTestId('connections-outcome')).toHaveTextContent(
-      /Incomplete/i,
+      /Game Over/i,
     )
-    fireEvent.click(screen.getByRole('button', { name: /continue/i }))
-    expect(useGameStore.getState().stage).toBe('riddle')
+    // Stays on potions — does not auto-advance.
+    expect(useGameStore.getState().stage).toBe('potions')
+    // Retry button is wired and resets mistakes to 0.
+    fireEvent.click(screen.getByTestId('connections-retry'))
+    expect(screen.getByTestId('connections-mistakes')).toHaveTextContent('0/4')
+    expect(screen.getByTestId('connections-submit')).toBeInTheDocument()
   })
 })

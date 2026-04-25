@@ -33,9 +33,11 @@ export const dialogue = {
       'Today you will sort sixteen names into four kindreds:',
     shuffle: 'Shuffle',
     correct: 'Acceptable. Barely.',
-    incorrect: 'You have run out of attempts. As expected.',
+    incorrect:
+      'Predictable. Four attempts squandered on the most rudimentary of pedigrees. I suppose you will need a Time-Turner — assuming you can pronounce it.',
     correctOutcome: 'All four groups solved',
-    incorrectOutcome: 'Sorting Incomplete',
+    incorrectOutcome: 'Game Over',
+    retry: 'Use Time-Turner',
   },
   riddle: {
     intro: {

@@ -45,7 +45,12 @@ export function MazeStage({ instant = false }: Props) {
   intentRef.current = intent
 
   const wonAdvancedRef = useRef(false)
-  const gameoverHandledRef = useRef(false)
+
+  const restart = () => {
+    stateRef.current = createInitialState(grid)
+    wonAdvancedRef.current = false
+    setTick((t) => (t + 1) % 1_000_000)
+  }
 
   useGameLoop((dtMs) => {
     const next = step(stateRef.current, dtMs, { intent: intentRef.current })
@@ -68,16 +73,6 @@ export function MazeStage({ instant = false }: Props) {
       wonAdvancedRef.current = true
       markComplete('mazeDone')
       setTimeout(() => advance(), 600)
-    }
-    // Out of lives → after a brief beat, kick back to Connections (potions).
-    if (
-      stateRef.current.phase === 'gameover' &&
-      !gameoverHandledRef.current
-    ) {
-      gameoverHandledRef.current = true
-      setTimeout(() => {
-        useGameStore.setState({ stage: 'potions' })
-      }, 1800)
     }
   })
 
@@ -109,14 +104,22 @@ export function MazeStage({ instant = false }: Props) {
         {state.phase === 'gameover' ? (
           <div
             data-testid="maze-gameover"
-            className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-hud-night/85"
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 bg-hud-night/85"
           >
-            <p className="font-rune text-4xl uppercase tracking-[0.3em] text-hud-ember drop-shadow-[2px_2px_0_#000]">
-              Out of Lives
+            <p className="font-rune text-5xl uppercase tracking-[0.3em] text-hud-ember drop-shadow-[2px_2px_0_#000]">
+              Game Over
             </p>
-            <p className="mt-4 font-body text-base italic text-torch-50">
-              Sent back to Snape's classroom…
+            <p className="font-body text-base italic text-torch-50">
+              The maze claims another contender.
             </p>
+            <button
+              type="button"
+              data-testid="maze-retry"
+              onClick={restart}
+              className="border-4 border-hud-gold bg-hud-stone px-6 py-2 font-rune text-lg uppercase tracking-[0.3em] text-hud-gold shadow-[inset_0_0_0_2px_#0d0a07] transition-transform hover:scale-[1.02] active:translate-y-px"
+            >
+              Try Again
+            </button>
           </div>
         ) : null}
         <div

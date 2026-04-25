@@ -82,6 +82,16 @@ export function ConnectionsStage() {
     advance()
   }
 
+  const onRetry = () => {
+    setSelected([])
+    setSolved([])
+    setMistakes(0)
+    setMessage(null)
+    setShake(0)
+    setOrder(shuffle(ALL_WORDS))
+    setExpression('neutral')
+  }
+
   const onDeselect = () => setSelected([])
 
   const onShuffle = () => {
@@ -230,7 +240,9 @@ export function ConnectionsStage() {
           <div className="flex flex-col items-center gap-3 pt-2">
             <p
               data-testid="connections-outcome"
-              className="font-rune text-xl uppercase tracking-[0.2em] text-hud-gold"
+              className={`font-rune text-xl uppercase tracking-[0.2em] ${
+                phase === 'lost' ? 'text-hud-ember' : 'text-hud-gold'
+              }`}
             >
               {phase === 'won' ? copy.correctOutcome : copy.incorrectOutcome}
             </p>
@@ -240,7 +252,18 @@ export function ConnectionsStage() {
             >
               {phase === 'won' ? copy.correct : copy.incorrect}
             </p>
-            <ContinueButton onClick={onContinue}>Continue</ContinueButton>
+            {phase === 'won' ? (
+              <ContinueButton onClick={onContinue}>Continue</ContinueButton>
+            ) : (
+              <button
+                type="button"
+                data-testid="connections-retry"
+                onClick={onRetry}
+                className="border-4 border-hud-gold bg-hud-stone px-6 py-2 font-rune text-lg uppercase tracking-[0.3em] text-hud-gold shadow-[inset_0_0_0_2px_#0d0a07] transition-transform hover:scale-[1.02] active:translate-y-px"
+              >
+                {copy.retry}
+              </button>
+            )}
           </div>
         )}
       </div>
