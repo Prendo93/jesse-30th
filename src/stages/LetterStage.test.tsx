@@ -31,22 +31,22 @@ describe('LetterStage', () => {
     fireEvent.click(screen.getByTestId('letter-envelope'))
 
     expect(
-      screen.queryByRole('button', { name: /reluctantly accept/i }),
+      screen.queryByRole('button', { name: /^accept$/i }),
     ).not.toBeInTheDocument()
 
     // Click on the parchment skips the handwriting to the end, which
     // mounts the button.
     fireEvent.click(screen.getByTestId('letter-parchment'))
     expect(
-      screen.getByRole('button', { name: /reluctantly accept/i }),
+      screen.getByRole('button', { name: /^accept$/i }),
     ).toBeInTheDocument()
   })
 
-  it('clicking "Reluctantly Accept" advances the store to sorting', () => {
+  it('clicking "Accept" advances the store to sorting', () => {
     render(<LetterStage />)
     fireEvent.click(screen.getByTestId('letter-envelope'))
     fireEvent.click(screen.getByTestId('letter-parchment'))
-    fireEvent.click(screen.getByRole('button', { name: /reluctantly accept/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^accept$/i }))
     expect(useGameStore.getState().stage).toBe('sorting')
   })
 })

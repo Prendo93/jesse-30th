@@ -21,7 +21,7 @@ describe('App router', () => {
     render(<App />)
     fireEvent.click(screen.getByTestId('letter-envelope'))
     fireEvent.click(screen.getByTestId('letter-parchment'))
-    fireEvent.click(screen.getByRole('button', { name: /reluctantly accept/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^accept$/i }))
     expect(useGameStore.getState().stage).toBe('sorting')
   })
 })
