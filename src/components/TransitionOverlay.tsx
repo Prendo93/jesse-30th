@@ -1,43 +1,65 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { Stage } from '../types'
-import { Jesse, type JessePose } from '../art/Jesse'
+import { Jesse, type JessePose, type JesseHouse } from '../art/Jesse'
 
-const STAGE_FANFARE: Record<Stage, { caption: string; line: string; pose: JessePose }> = {
+type Fanfare = {
+  caption: string
+  line: string
+  pose: JessePose
+  chub: number
+  house: JesseHouse
+}
+
+const STAGE_FANFARE: Record<Stage, Fanfare> = {
   letter: {
     caption: 'You\'ve got mail',
     line: 'A letter, of dubious provenance, has arrived.',
     pose: 'reading',
+    chub: 0,
+    house: null,
   },
   sorting: {
     caption: 'To the Great Hall',
     line: 'The Sorting Hat awaits. Try not to think too hard.',
     pose: 'default',
+    chub: 0,
+    house: null,
   },
   potions: {
     caption: 'Down to the Dungeon',
     line: 'Snape has been waiting. Ominously.',
     pose: 'mixing',
+    chub: 1,
+    house: 'Hufflepuff',
   },
   charms: {
     caption: 'Charms classroom',
     line: 'Wave the wand. Mean it. Almost.',
     pose: 'wand',
+    chub: 2,
+    house: 'Hufflepuff',
   },
   flying: {
     caption: 'Out to the Pitch',
     line: 'The brooms are mostly cooperative today.',
     pose: 'broom',
+    chub: 3,
+    house: 'Hufflepuff',
   },
   ceremony: {
     caption: 'End-of-year Ceremony',
     line: 'Time to tally the carnage.',
     pose: 'default',
+    chub: 4,
+    house: 'Hufflepuff',
   },
   gift: {
     caption: 'A Reward Approaches',
     line: 'Inexplicable, but happening.',
     pose: 'crowned',
+    chub: 5,
+    house: 'Hufflepuff',
   },
 }
 
@@ -123,7 +145,12 @@ export function TransitionOverlay({ stage }: { stage: Stage }) {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="relative z-10 my-4 h-48"
           >
-            <Jesse pose={STAGE_FANFARE[showFor].pose} className="h-48 w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.8)]" />
+            <Jesse
+              pose={STAGE_FANFARE[showFor].pose}
+              chub={STAGE_FANFARE[showFor].chub}
+              house={STAGE_FANFARE[showFor].house}
+              className="h-48 w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.8)]"
+            />
           </motion.div>
 
           {/* Dialogue line */}

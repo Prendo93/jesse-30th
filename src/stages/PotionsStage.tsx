@@ -46,6 +46,8 @@ export function PotionsStage() {
     <StageShell backdrop={<Backdrop name="dungeon" />}>
       <Jesse
         pose="mixing"
+        chub={1}
+        house="Hufflepuff"
         className="pointer-events-none absolute bottom-2 right-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 grid w-full max-w-4xl gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm md:grid-cols-[1fr_auto_1fr]">

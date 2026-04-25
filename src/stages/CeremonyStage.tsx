@@ -35,6 +35,8 @@ export function CeremonyStage() {
     <StageShell backdrop={<Backdrop name="ceremony-hall" />}>
       <Jesse
         pose="default"
+        chub={4}
+        house="Hufflepuff"
         className="pointer-events-none absolute bottom-0 right-2 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-6 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm">

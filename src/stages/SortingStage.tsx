@@ -35,6 +35,7 @@ export function SortingStage() {
     <StageShell backdrop={<Backdrop name="great-hall" />}>
       <Jesse
         pose="default"
+        chub={0}
         className="pointer-events-none absolute bottom-0 left-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-6 rounded border-4 border-hud-gold bg-black/70 p-6 text-center backdrop-blur-sm">
