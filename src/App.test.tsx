@@ -1,10 +1,27 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
+import { useGameStore } from './store'
 
-describe('canary', () => {
-  it('renders the canary heading so the test harness is wired up', () => {
+describe('App router', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+    useGameStore.getState().reset()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
+  it('renders the letter stage when the store is at "letter"', () => {
     render(<App />)
-    expect(screen.getByTestId('canary')).toHaveTextContent(/Hogwarts/i)
+    expect(screen.getByTestId('letter-envelope')).toBeInTheDocument()
+  })
+
+  it('routes to the next stage when the store advances', () => {
+    render(<App />)
+    fireEvent.click(screen.getByTestId('letter-envelope'))
+    fireEvent.click(screen.getByTestId('dialogue-box'))
+    fireEvent.click(screen.getByRole('button', { name: /reluctantly accept/i }))
+    expect(useGameStore.getState().stage).toBe('sorting')
   })
 })
