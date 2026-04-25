@@ -1,38 +1,38 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { StageShell } from '../components/StageShell'
-import { ContinueButton } from '../components/ContinueButton'
-import { useGameStore } from '../store'
-import { Backdrop } from '../art/Backdrop'
-import { useTypewriter } from '../hooks/useTypewriter'
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { StageShell } from "../components/StageShell";
+import { ContinueButton } from "../components/ContinueButton";
+import { useGameStore } from "../store";
+import { Backdrop } from "../art/Backdrop";
+import { useTypewriter } from "../hooks/useTypewriter";
 
 // '\f' is an invisible pause sentinel — see useTypewriter. We insert
 // exactly one, between "Wizardry." and "(Standards…", to land that
 // parenthetical with comic timing.
 const FULL_LETTER = [
-  'Dear Jesse,',
-  '',
-  'We are pleased to inform you',
-  'that you have been accepted to',
-  'Hogwarts School of Witchcraft',
-  'and Wizardry.\f',
-  '',
-  '(Standards have recently been',
-  'lowered, considerably.)\f',
-  '',
-  'Term begins immediately.',
-  '',
-  '— Prof. M. McGonagall',
-].join('\n')
+  "Dear Jesse,",
+  "",
+  "We are pleased to inform you",
+  "that you have been accepted to",
+  "Hogwarts School of Witchcraft",
+  "and Wizardry.\f",
+  "",
+  "(Standards have recently been",
+  "lowered, considerably.)\f",
+  "",
+  "Term begins immediately.",
+  "",
+  "— Prof. M. McGonagall",
+].join("\n");
 
 export function LetterStage() {
-  const [opened, setOpened] = useState(false)
-  const advance = useGameStore((s) => s.advance)
+  const [opened, setOpened] = useState(false);
+  const advance = useGameStore((s) => s.advance);
   const { shown, isComplete, skipToEnd } = useTypewriter(
-    opened ? FULL_LETTER : '',
+    opened ? FULL_LETTER : "",
     35,
-    3000,
-  )
+    1500
+  );
 
   return (
     <StageShell backdrop={<Backdrop name="castle-exterior" />}>
@@ -66,14 +66,14 @@ export function LetterStage() {
                 data-testid="letter-accept"
                 onClick={() => advance()}
               >
-                Reluctantly Accept
+                Accept
               </ContinueButton>
             ) : null}
           </Parchment>
         )}
       </div>
     </StageShell>
-  )
+  );
 }
 
 function Parchment({
@@ -81,9 +81,9 @@ function Parchment({
   skip,
   children,
 }: {
-  text: string
-  skip: () => void
-  children: React.ReactNode
+  text: string;
+  skip: () => void;
+  children: React.ReactNode;
 }) {
   return (
     <motion.div
@@ -91,8 +91,8 @@ function Parchment({
       onClick={skip}
       initial={{ scaleY: 0, opacity: 0 }}
       animate={{ scaleY: 1, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      style={{ transformOrigin: 'top center' }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      style={{ transformOrigin: "top center" }}
       className="relative w-[28rem] max-w-full cursor-pointer border-4 border-hud-gold bg-[#f4e4bf] px-8 py-10 shadow-[10px_10px_0_#000]"
     >
       {/* Aged-paper edges */}
@@ -101,7 +101,7 @@ function Parchment({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at center, transparent 60%, rgba(120,80,30,0.25) 100%)',
+            "radial-gradient(ellipse at center, transparent 60%, rgba(120,80,30,0.25) 100%)",
         }}
       />
       {/* Hogwarts crest watermark */}
@@ -121,7 +121,7 @@ function Parchment({
         <motion.span
           aria-hidden
           className="ml-0.5 inline-block w-[2px] bg-[#3a230f] align-middle"
-          style={{ height: '1.6rem' }}
+          style={{ height: "1.6rem" }}
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 0.8, repeat: Infinity }}
         />
@@ -129,5 +129,5 @@ function Parchment({
 
       <div className="mt-6 flex justify-center">{children}</div>
     </motion.div>
-  )
+  );
 }
