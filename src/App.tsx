@@ -1,7 +1,11 @@
+import { useEffect } from 'react'
 import { useGameStore } from './store'
 import { LetterStage } from './stages/LetterStage'
 import { SortingStage } from './stages/SortingStage'
+import { CeremonyStage } from './stages/CeremonyStage'
+import { GiftStage } from './stages/GiftStage'
 import { StageShell } from './components/StageShell'
+import { STAGES, type Stage } from './types'
 
 function PlaceholderStage({ name }: { name: string }) {
   return (
@@ -11,8 +15,18 @@ function PlaceholderStage({ name }: { name: string }) {
   )
 }
 
+const isStage = (s: string): s is Stage => (STAGES as readonly string[]).includes(s)
+
 function App() {
   const stage = useGameStore((s) => s.stage)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const requested = params.get('stage')
+    if (requested && isStage(requested)) {
+      useGameStore.setState({ stage: requested })
+    }
+  }, [])
 
   switch (stage) {
     case 'letter':
@@ -26,9 +40,9 @@ function App() {
     case 'flying':
       return <PlaceholderStage name="flying" />
     case 'ceremony':
-      return <PlaceholderStage name="ceremony" />
+      return <CeremonyStage />
     case 'gift':
-      return <PlaceholderStage name="gift" />
+      return <GiftStage />
   }
 }
 
