@@ -7,6 +7,7 @@ const initialPlayer: Player = {
   potionsDone: false,
   charmsDone: false,
   flyingDone: false,
+  mazeDone: false,
 }
 
 type GameStore = {

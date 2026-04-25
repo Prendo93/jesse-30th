@@ -15,7 +15,21 @@ describe('useGameStore', () => {
       potionsDone: false,
       charmsDone: false,
       flyingDone: false,
+      mazeDone: false,
     })
+  })
+
+  it('STAGES inserts maze between flying and ceremony', () => {
+    const flyingIdx = STAGES.indexOf('flying')
+    const mazeIdx = STAGES.indexOf('maze')
+    const ceremonyIdx = STAGES.indexOf('ceremony')
+    expect(mazeIdx).toBe(flyingIdx + 1)
+    expect(ceremonyIdx).toBe(mazeIdx + 1)
+  })
+
+  it('markComplete supports the mazeDone flag', () => {
+    useGameStore.getState().markComplete('mazeDone')
+    expect(useGameStore.getState().player.mazeDone).toBe(true)
   })
 
   it('advances through every stage in order and stops at gift', () => {

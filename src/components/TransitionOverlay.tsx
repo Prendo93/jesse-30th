@@ -47,11 +47,18 @@ const STAGE_FANFARE: Record<Stage, Fanfare> = {
     chub: 3,
     house: 'Hufflepuff',
   },
+  maze: {
+    caption: 'The Triwizard Maze',
+    line: "Reach the cup. Don't get caught. Don't think about it.",
+    pose: 'default',
+    chub: 4,
+    house: 'Hufflepuff',
+  },
   ceremony: {
     caption: 'End-of-year Ceremony',
     line: 'Time to tally the carnage.',
     pose: 'default',
-    chub: 4,
+    chub: 5,
     house: 'Hufflepuff',
   },
   gift: {

@@ -64,6 +64,10 @@ test('happy path: letter → sorting → potions → charms → flying → cerem
   await page.getByRole('button', { name: /mount broom/i }).click()
   await page.getByRole('button', { name: /continue/i }).click()
 
+  // Maze — placeholder for now; skip via the dev affordance.
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'maze')
+  await page.getByTestId('maze-skip').click()
+
   // Ceremony — wait for twist, then claim reward.
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'ceremony')
   await expect(page.getByTestId('ceremony-twist')).toBeVisible({

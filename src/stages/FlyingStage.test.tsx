@@ -45,10 +45,10 @@ describe('FlyingStage', () => {
     )
   })
 
-  it('continue button advances the store to ceremony', () => {
+  it('continue button advances the store to maze', () => {
     render(<FlyingStage />)
     fireEvent.click(screen.getByRole('button', { name: /mount broom/i }))
     fireEvent.click(screen.getByRole('button', { name: /continue/i }))
-    expect(useGameStore.getState().stage).toBe('ceremony')
+    expect(useGameStore.getState().stage).toBe('maze')
   })
 })

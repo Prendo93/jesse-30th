@@ -8,5 +8,5 @@ test('flying: any single attempt advances to ceremony', async ({ page }) => {
   await expect(page.getByTestId('flying-result')).toBeVisible()
 
   await page.getByRole('button', { name: /continue/i }).click()
-  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'ceremony')
+  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'maze')
 })

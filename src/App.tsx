@@ -5,6 +5,7 @@ import { SortingStage } from './stages/SortingStage'
 import { PotionsStage } from './stages/PotionsStage'
 import { CharmsStage } from './stages/CharmsStage'
 import { FlyingStage } from './stages/FlyingStage'
+import { MazeStage } from './maze/MazeStage'
 import { CeremonyStage } from './stages/CeremonyStage'
 import { GiftStage } from './stages/GiftStage'
 import { TransitionOverlay } from './components/TransitionOverlay'
@@ -39,6 +40,8 @@ function App() {
         return <CharmsStage />
       case 'flying':
         return <FlyingStage />
+      case 'maze':
+        return <MazeStage />
       case 'ceremony':
         return <CeremonyStage />
       case 'gift':
