@@ -7,18 +7,10 @@ import { CharmsStage } from './stages/CharmsStage'
 import { FlyingStage } from './stages/FlyingStage'
 import { CeremonyStage } from './stages/CeremonyStage'
 import { GiftStage } from './stages/GiftStage'
-import { StageShell } from './components/StageShell'
 import { STAGES, type Stage } from './types'
 
-function PlaceholderStage({ name }: { name: string }) {
-  return (
-    <StageShell stageName={name.toUpperCase()}>
-      <div className="font-rune text-2xl text-hud-gold">{name} stage</div>
-    </StageShell>
-  )
-}
-
-const isStage = (s: string): s is Stage => (STAGES as readonly string[]).includes(s)
+const isStage = (s: string): s is Stage =>
+  (STAGES as readonly string[]).includes(s)
 
 function App() {
   const stage = useGameStore((s) => s.stage)
@@ -28,6 +20,9 @@ function App() {
     const requested = params.get('stage')
     if (requested && isStage(requested)) {
       useGameStore.setState({ stage: requested })
+    }
+    if (params.has('reset')) {
+      useGameStore.getState().reset()
     }
   }, [])
 
