@@ -195,7 +195,7 @@ export function SortingStage() {
           <>
             <p
               data-testid="sorting-reveal"
-              className="font-rune text-5xl uppercase tracking-[0.3em] text-hud-gold drop-shadow-[2px_2px_0_#000]"
+              className="break-words font-rune text-3xl uppercase tracking-[0.15em] text-hud-gold drop-shadow-[2px_2px_0_#000] sm:text-5xl sm:tracking-[0.3em]"
             >
               {dialogue.sorting.reveal.body}
             </p>

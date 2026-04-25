@@ -21,8 +21,14 @@ export function StageShell({ children, backdrop }: Props) {
 
       <HudChrome />
 
-      <div className="relative z-10 flex flex-1 items-center justify-center px-6 py-10">
-        {children}
+      {/* Scroll wrapper: outer is the scroll container so the HUD chrome
+          and scanline overlay stay fixed, while the inner pads and
+          centres content with min-h-full so short stages stay
+          centred and tall stages scroll into view. */}
+      <div className="relative z-10 flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="flex min-h-full items-center justify-center px-3 py-6 sm:px-6 sm:py-10">
+          {children}
+        </div>
       </div>
 
       <ScanlineOverlay />

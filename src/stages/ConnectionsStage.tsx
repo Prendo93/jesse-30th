@@ -100,13 +100,13 @@ export function ConnectionsStage() {
       />
       <div className="relative z-20 flex w-full max-w-3xl flex-col items-center gap-4 rounded border-4 border-hud-gold bg-black/75 p-6 backdrop-blur-sm">
         <header className="flex w-full flex-col items-stretch gap-2">
-          <div className="flex items-center justify-between">
-            <h2 className="font-rune text-xl uppercase tracking-[0.3em] text-hud-gold">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="font-rune text-base uppercase tracking-[0.2em] text-hud-gold sm:text-xl sm:tracking-[0.3em]">
               Connections — Wizarding World
             </h2>
             <span
               data-testid="connections-mistakes"
-              className="font-rune text-sm uppercase tracking-[0.2em] text-hud-ember"
+              className="font-rune text-xs uppercase tracking-[0.2em] text-hud-ember sm:text-sm"
             >
               Mistakes: {mistakes}/{MAX_MISTAKES}
             </span>
@@ -136,13 +136,13 @@ export function ConnectionsStage() {
               <div
                 key={key}
                 data-testid={`connections-solved-${key}`}
-                className="flex flex-col items-center justify-center gap-1 rounded border-2 border-hud-gold px-3 py-3 text-center"
+                className="flex flex-col items-center justify-center gap-1 rounded border-2 border-hud-gold px-2 py-2 text-center sm:px-3 sm:py-3"
                 style={{ backgroundColor: cat.color }}
               >
-                <p className="font-rune text-sm uppercase tracking-[0.3em] text-hud-gold drop-shadow-[1px_1px_0_#000]">
+                <p className="break-words font-rune text-[0.65rem] uppercase leading-tight tracking-[0.15em] text-hud-gold drop-shadow-[1px_1px_0_#000] sm:text-sm sm:tracking-[0.3em]">
                   {cat.label}
                 </p>
-                <p className="font-rune text-base tracking-[0.15em] text-torch-50">
+                <p className="break-words font-rune text-[0.7rem] tracking-tight text-torch-50 sm:text-base sm:tracking-[0.15em]">
                   {cat.words.join(' · ')}
                 </p>
               </div>
@@ -174,7 +174,7 @@ export function ConnectionsStage() {
                   }
                   onMouseLeave={() => setExpression('neutral')}
                   disabled={phase !== 'play'}
-                  className={`min-h-[3.5rem] border-2 px-2 py-3 font-rune text-sm uppercase tracking-[0.15em] transition disabled:cursor-not-allowed ${
+                  className={`flex min-h-[3rem] items-center justify-center break-words border-2 px-1 py-2 text-center font-rune text-[0.65rem] uppercase leading-tight tracking-tight transition disabled:cursor-not-allowed sm:px-2 sm:py-3 sm:text-sm sm:tracking-[0.15em] ${
                     isSelected
                       ? 'border-hud-gold bg-hud-ember text-hud-night shadow-[inset_0_0_0_2px_#0d0a07]'
                       : 'border-hud-gold/60 bg-hud-stone/80 text-torch-50 hover:bg-hud-ember/30'
