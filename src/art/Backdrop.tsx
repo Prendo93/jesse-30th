@@ -6,6 +6,7 @@ import { Classroom } from './backdrops/Classroom'
 import { QuidditchSky } from './backdrops/QuidditchSky'
 import { CeremonyHall } from './backdrops/CeremonyHall'
 import { TreasureRoom } from './backdrops/TreasureRoom'
+import { Hedgemaze } from './backdrops/Hedgemaze'
 
 export type BackdropName =
   | 'castle-exterior'
@@ -15,6 +16,7 @@ export type BackdropName =
   | 'quidditch-sky'
   | 'ceremony-hall'
   | 'treasure-room'
+  | 'hedgemaze'
 
 const MAP: Record<BackdropName, ComponentType> = {
   'castle-exterior': CastleExterior,
@@ -24,6 +26,7 @@ const MAP: Record<BackdropName, ComponentType> = {
   'quidditch-sky': QuidditchSky,
   'ceremony-hall': CeremonyHall,
   'treasure-room': TreasureRoom,
+  hedgemaze: Hedgemaze,
 }
 
 export function Backdrop({ name }: { name: BackdropName }) {
