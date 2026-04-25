@@ -30,6 +30,7 @@ export function LetterStage() {
   const { shown, isComplete, skipToEnd } = useTypewriter(
     opened ? FULL_LETTER : '',
     35,
+    3000,
   )
 
   return (

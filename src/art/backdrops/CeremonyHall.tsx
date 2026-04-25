@@ -31,7 +31,7 @@ export function CeremonyHall() {
 
       {/* House banners */}
       {[
-        { x: 100, color: '#7a1a1a', emblem: 'L' }, // Gryffindor
+        { x: 100, color: '#7a1a1a', emblem: 'G' }, // Gryffindor
         { x: 280, color: '#1a4a3a', emblem: 'S' }, // Slytherin
         { x: 480, color: '#1a3a6a', emblem: 'R' }, // Ravenclaw
         { x: 680, color: '#a06028', emblem: 'H' }, // Hufflepuff

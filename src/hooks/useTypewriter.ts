@@ -1,27 +1,64 @@
 import { useEffect, useRef, useState } from 'react'
 
-export function useTypewriter(text: string, charMs = 30) {
+/**
+ * Reveals `text` one character at a time. When the cursor crosses a
+ * paragraph break (the second '\n' of a `\n\n` sequence), the next
+ * character waits `paragraphPauseMs` milliseconds before it appears.
+ */
+export function useTypewriter(
+  text: string,
+  charMs = 30,
+  paragraphPauseMs = 0,
+) {
   const [shown, setShown] = useState('')
-  const indexRef = useRef(0)
+  const skipRef = useRef(false)
 
   useEffect(() => {
-    indexRef.current = 0
+    skipRef.current = false
+    if (text.length === 0) {
+      setShown('')
+      return
+    }
     setShown('')
 
-    const id = setInterval(() => {
-      indexRef.current += 1
-      if (indexRef.current >= text.length) {
+    let i = 0
+    let cancelled = false
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    const tick = () => {
+      if (cancelled) return
+      if (skipRef.current) {
         setShown(text)
-        clearInterval(id)
         return
       }
-      setShown(text.slice(0, indexRef.current))
-    }, charMs)
+      i += 1
+      const slice = text.slice(0, i)
+      setShown(slice)
+      if (i >= text.length) return
 
-    return () => clearInterval(id)
-  }, [text, charMs])
+      // If we've just emitted the second of a paired '\n\n', pause longer
+      // before the next character.
+      const justEmitted = text[i - 1]
+      const prev = text[i - 2]
+      const isParagraphBreak = justEmitted === '\n' && prev === '\n'
+      const delay = isParagraphBreak ? paragraphPauseMs : charMs
 
-  const skipToEnd = () => setShown(text)
+      timer = setTimeout(tick, delay)
+    }
+
+    timer = setTimeout(tick, charMs)
+
+    return () => {
+      cancelled = true
+      if (timer) clearTimeout(timer)
+    }
+  }, [text, charMs, paragraphPauseMs])
+
+  const skipToEnd = () => {
+    skipRef.current = true
+    setShown(text)
+  }
+
   const isComplete = shown === text && text.length > 0
 
   return { shown, isComplete, skipToEnd }
