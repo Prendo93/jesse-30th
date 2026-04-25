@@ -7,9 +7,15 @@ import { useGameStore } from '../store'
 import { Backdrop } from '../art/Backdrop'
 import { Jesse, type JesseExpression } from '../art/Jesse'
 
-type Phase = 'asking' | 'thinking' | 'reveal'
+type Phase =
+  | 'asking'
+  | 'concerned'
+  | 'concernedAfter'
+  | 'analyzing'
+  | 'deliberation'
+  | 'finalPause'
+  | 'reveal'
 
-const THINKING_MS = 2500
 const ANSWER_EXPRESSIONS: JesseExpression[] = [
   'worried',
   'afraid',
@@ -17,10 +23,22 @@ const ANSWER_EXPRESSIONS: JesseExpression[] = [
   'sad',
 ]
 
+const FLASH_HOUSES = ['Gryffindor', 'Ravenclaw', 'Slytherin'] as const
+
+const PHASE_DURATIONS: Record<Exclude<Phase, 'asking' | 'reveal'>, number> = {
+  concerned: 1500,
+  concernedAfter: 1500,
+  analyzing: 4000,
+  deliberation: 4500,
+  finalPause: 1800,
+}
+
 export function SortingStage() {
   const [questionIndex, setQuestionIndex] = useState(0)
   const [phase, setPhase] = useState<Phase>('asking')
   const [expression, setExpression] = useState<JesseExpression>('neutral')
+  const [flashHouseIdx, setFlashHouseIdx] = useState(0)
+  const [analyzeProgress, setAnalyzeProgress] = useState(0)
   const advance = useGameStore((s) => s.advance)
   const current = sortingQuestions[questionIndex]
 
@@ -28,14 +46,41 @@ export function SortingStage() {
     if (questionIndex < sortingQuestions.length - 1) {
       setQuestionIndex(questionIndex + 1)
     } else {
-      setPhase('thinking')
+      setPhase('concerned')
     }
   }
 
+  // Phase machine: each phase auto-advances after its duration.
   useEffect(() => {
-    if (phase !== 'thinking') return
-    const id = setTimeout(() => setPhase('reveal'), THINKING_MS)
+    if (phase === 'asking' || phase === 'reveal') return
+    const next: Record<typeof phase, Phase> = {
+      concerned: 'concernedAfter',
+      concernedAfter: 'analyzing',
+      analyzing: 'deliberation',
+      deliberation: 'finalPause',
+      finalPause: 'reveal',
+    }
+    const id = setTimeout(() => setPhase(next[phase]), PHASE_DURATIONS[phase])
     return () => clearTimeout(id)
+  }, [phase])
+
+  // Analyzing phase: animate progress bar and flash houses.
+  useEffect(() => {
+    if (phase !== 'analyzing') return
+    const start = Date.now()
+    const total = PHASE_DURATIONS.analyzing
+    const progressId = setInterval(() => {
+      const pct = Math.min(100, ((Date.now() - start) / total) * 100)
+      setAnalyzeProgress(pct)
+    }, 50)
+    const flashId = setInterval(() => {
+      setFlashHouseIdx((i) => (i + 1) % FLASH_HOUSES.length)
+    }, 400)
+    return () => {
+      clearInterval(progressId)
+      clearInterval(flashId)
+      setAnalyzeProgress(0)
+    }
   }, [phase])
 
   return (
@@ -78,12 +123,71 @@ export function SortingStage() {
           </>
         ) : null}
 
-        {phase === 'thinking' ? (
+        {phase === 'concerned' ? (
           <p
             data-testid="sorting-thinking"
-            className="animate-pulse font-rune text-3xl text-hud-gold"
+            className="font-rune text-2xl italic text-hud-gold"
           >
-            {dialogue.sorting.thinking}
+            {dialogue.sorting.concerned}
+          </p>
+        ) : null}
+
+        {phase === 'concernedAfter' ? (
+          <>
+            <p
+              data-testid="sorting-thinking"
+              className="font-rune text-2xl italic text-hud-gold"
+            >
+              {dialogue.sorting.concerned}
+            </p>
+            <p
+              data-testid="sorting-concerned-after"
+              className="font-rune text-2xl uppercase tracking-[0.2em] text-hud-ember"
+            >
+              {dialogue.sorting.concernedAfter}
+            </p>
+          </>
+        ) : null}
+
+        {phase === 'analyzing' ? (
+          <div
+            data-testid="sorting-analyzing"
+            className="flex w-full flex-col items-center gap-4"
+          >
+            <p className="font-rune text-xl uppercase tracking-[0.2em] text-hud-gold">
+              {dialogue.sorting.analyzing}
+            </p>
+            <div className="h-3 w-full max-w-md border-2 border-hud-gold bg-hud-night/80">
+              <div
+                data-testid="sorting-progress-bar"
+                className="h-full bg-hud-gold transition-[width] duration-75"
+                style={{ width: `${analyzeProgress}%` }}
+              />
+            </div>
+            <p
+              data-testid="sorting-flash-house"
+              className="font-rune text-3xl uppercase tracking-[0.3em] text-hud-ember"
+            >
+              {FLASH_HOUSES[flashHouseIdx]}…
+            </p>
+          </div>
+        ) : null}
+
+        {phase === 'deliberation' ? (
+          <p
+            data-testid="sorting-deliberation"
+            className="font-body text-lg italic text-torch-50"
+          >
+            {dialogue.sorting.deliberation}
+          </p>
+        ) : null}
+
+        {phase === 'finalPause' ? (
+          <p
+            data-testid="sorting-final-pause"
+            className="font-rune text-2xl italic text-hud-gold"
+          >
+            {dialogue.sorting.finalPause}
           </p>
         ) : null}
 
@@ -91,7 +195,7 @@ export function SortingStage() {
           <>
             <p
               data-testid="sorting-reveal"
-              className="font-rune text-3xl uppercase tracking-[0.2em] text-hud-gold"
+              className="font-rune text-5xl uppercase tracking-[0.3em] text-hud-gold drop-shadow-[2px_2px_0_#000]"
             >
               {dialogue.sorting.reveal.body}
             </p>

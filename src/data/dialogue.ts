@@ -8,13 +8,19 @@ export const dialogue = {
   sorting: {
     intro: {
       speaker: 'THE HAT',
-      body: 'Sit still. I will be the judge of you. Answer honestly. Or don\'t. It will not matter.',
+      body:
+        'Sit still. I will be the judge of you. Answer honestly. Or don\'t. It will not matter.',
     },
     thinking: 'Hmmm…',
+    concerned: 'The Sorting Hat pauses…',
+    concernedAfter: '…deeply concerned.',
+    analyzing: 'Analyzing traits…',
+    deliberation:
+      'Hmm… challenging… very complex… I see courage… intelligence… hesitation… questionable ethics…',
+    finalPause: 'This is not an easy decision…',
     reveal: {
       speaker: 'THE HAT',
-      body:
-        'Ah yes… I see… absolutely no ambiguity here… You belong in… HUFFLEPUFF.',
+      body: 'HUFFLEPUFF!',
     },
   },
   potions: {

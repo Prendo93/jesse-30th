@@ -3,7 +3,11 @@ import { sortingQuestions } from '../src/data/sortingQuestions'
 
 test('happy path: letter → sorting → potions → charms → flying → maze → ceremony → gift', async ({
   page,
-}) => {
+}, testInfo) => {
+  // 42 sorting questions + a 13s deliberation push the full happy-path
+  // past Playwright's 30s default. Bump timeout for this single spec.
+  testInfo.setTimeout(90_000)
+
   // ?maze=instant short-circuits the arcade play so the e2e doesn't
   // depend on RNG/timing of the Pac-Man-style maze.
   await page.goto('/?maze=instant')
@@ -20,7 +24,7 @@ test('happy path: letter → sorting → potions → charms → flying → maze 
     await page.getByTestId('sorting-answer').first().click()
   }
   await expect(page.getByTestId('sorting-reveal')).toContainText('HUFFLEPUFF', {
-    timeout: 5_000,
+    timeout: 20_000,
   })
   await page.getByRole('button', { name: /proceed/i }).click()
 

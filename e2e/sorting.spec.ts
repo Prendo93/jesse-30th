@@ -8,21 +8,24 @@ const reachSortingStage = async (page: import('@playwright/test').Page) => {
 }
 
 test.describe('sorting hat', () => {
-  test('always lands on Hufflepuff regardless of answers', async ({ page }) => {
+  test('always lands on Hufflepuff regardless of answers', async ({ page }, testInfo) => {
+    testInfo.setTimeout(60_000)
     await reachSortingStage(page)
     await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'sorting')
 
-    // Pick a different answer index for each question to prove answers are ignored.
-    const picks = [0, 1, 2, 3, 0]
-    for (const pick of picks) {
+    // Click through every question — answers are ignored, so just pick
+    // the first option each time.
+    for (let i = 0; i < 42; i += 1) {
       const buttons = page.getByTestId('sorting-answer')
-      await buttons.nth(pick).click()
+      await buttons.first().click()
     }
 
-    await expect(page.getByTestId('sorting-thinking')).toBeVisible()
+    await expect(page.getByTestId('sorting-thinking')).toBeVisible({
+      timeout: 5_000,
+    })
     await expect(page.getByTestId('sorting-reveal')).toContainText(
       'HUFFLEPUFF',
-      { timeout: 5_000 },
+      { timeout: 20_000 },
     )
 
     await page.getByRole('button', { name: /proceed/i }).click()

@@ -11,11 +11,21 @@ const answerEvery = (pickIndex: (i: number) => number) => {
   }
 }
 
+// Drive all the chained phase timeouts to completion.
+const advanceToReveal = () => {
+  // Each phase schedules the next one inside its useEffect. We loop a
+  // few advances so newly-scheduled timers also fire.
+  for (let i = 0; i < 8; i += 1) {
+    act(() => {
+      vi.advanceTimersByTime(2000)
+    })
+  }
+}
+
 describe('SortingStage', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     useGameStore.getState().reset()
-    // Move the store to "sorting" so the stage is current.
     useGameStore.setState({ stage: 'sorting' })
   })
   afterEach(() => {
@@ -40,31 +50,47 @@ describe('SortingStage', () => {
     )
   })
 
-  it.each([
-    [0],
-    [1],
-    [2],
-    [3],
-  ])(
+  it.each([[0], [1], [2], [3]])(
     'always lands on HUFFLEPUFF regardless of answer index %i',
     (idx) => {
       render(<SortingStage />)
       answerEvery(() => idx)
 
-      // After all questions answered, the "thinking" indicator appears.
+      // After all questions answered, the "deeply concerned" beat appears.
       expect(screen.getByTestId('sorting-thinking')).toBeInTheDocument()
 
-      // After the 2.5s pause, the reveal shows HUFFLEPUFF.
-      act(() => {
-        vi.advanceTimersByTime(2500)
-      })
+      advanceToReveal()
       expect(screen.getByTestId('sorting-reveal')).toHaveTextContent(
         /HUFFLEPUFF/,
       )
     },
   )
 
-  it('changes Jesse\'s expression on hovering an answer button', () => {
+  it('walks through all reveal phases in order', () => {
+    render(<SortingStage />)
+    answerEvery(() => 0)
+
+    expect(screen.getByTestId('sorting-thinking')).toBeInTheDocument()
+
+    act(() => vi.advanceTimersByTime(1600))
+    expect(screen.getByTestId('sorting-concerned-after')).toBeInTheDocument()
+
+    act(() => vi.advanceTimersByTime(1600))
+    expect(screen.getByTestId('sorting-analyzing')).toBeInTheDocument()
+    expect(screen.getByTestId('sorting-progress-bar')).toBeInTheDocument()
+    expect(screen.getByTestId('sorting-flash-house')).toBeInTheDocument()
+
+    act(() => vi.advanceTimersByTime(4100))
+    expect(screen.getByTestId('sorting-deliberation')).toBeInTheDocument()
+
+    act(() => vi.advanceTimersByTime(4600))
+    expect(screen.getByTestId('sorting-final-pause')).toBeInTheDocument()
+
+    act(() => vi.advanceTimersByTime(1900))
+    expect(screen.getByTestId('sorting-reveal')).toHaveTextContent(/HUFFLEPUFF/)
+  })
+
+  it("changes Jesse's expression on hovering an answer button", () => {
     render(<SortingStage />)
     const jesse = screen.getByTestId('jesse-character')
     expect(jesse).toHaveAttribute('data-expression', 'neutral')
@@ -80,9 +106,7 @@ describe('SortingStage', () => {
   it('clicking continue on the reveal advances the store to potions', () => {
     render(<SortingStage />)
     answerEvery(() => 2)
-    act(() => {
-      vi.advanceTimersByTime(2500)
-    })
+    advanceToReveal()
     fireEvent.click(screen.getByRole('button', { name: /proceed/i }))
     expect(useGameStore.getState().stage).toBe('potions')
   })
