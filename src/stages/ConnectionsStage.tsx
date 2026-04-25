@@ -101,14 +101,8 @@ export function ConnectionsStage() {
 
   return (
     <StageShell backdrop={<Backdrop name="dungeon" />}>
-      <Jesse
-        pose="mixing"
-        chub={1}
-        house="Hufflepuff"
-        expression={expression}
-        className="pointer-events-none absolute bottom-2 right-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
-      />
-      <div className="relative z-20 flex w-full max-w-3xl flex-col items-center gap-4 rounded border-4 border-hud-gold bg-black/75 p-6 backdrop-blur-sm">
+      <div className="flex w-full max-w-3xl flex-col items-center gap-4">
+      <div className="relative z-20 flex w-full flex-col items-center gap-4 rounded border-4 border-hud-gold bg-black/75 p-6 backdrop-blur-sm">
         <header className="flex w-full flex-col items-stretch gap-2">
           <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <h2 className="font-rune text-base uppercase tracking-[0.2em] text-hud-gold sm:text-xl sm:tracking-[0.3em]">
@@ -266,6 +260,14 @@ export function ConnectionsStage() {
             )}
           </div>
         )}
+      </div>
+        <Jesse
+          pose="mixing"
+          chub={1}
+          house="Hufflepuff"
+          expression={expression}
+          className="pointer-events-none block h-40 w-auto drop-shadow-[4px_4px_0_rgba(0,0,0,0.6)] sm:absolute sm:bottom-2 sm:right-4 sm:z-10 sm:h-[55%] sm:drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+        />
       </div>
     </StageShell>
   )

@@ -60,19 +60,12 @@ export function RiddleStage() {
 
   return (
     <StageShell backdrop={<Backdrop name="classroom" />}>
-      <Jesse
-        pose="reading"
-        chub={2}
-        house="Hufflepuff"
-        expression={expression}
-        className="pointer-events-none absolute bottom-0 left-4 z-10 h-[60%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
-      />
-
+      <div className="flex w-full max-w-2xl flex-col items-center gap-4">
       <motion.div
         key={shake}
         animate={shake > 0 ? { x: [0, -8, 8, -6, 6, -3, 3, 0] } : { x: 0 }}
         transition={{ duration: 0.4 }}
-        className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-5 rounded border-4 border-hud-gold bg-black/75 p-6 text-center backdrop-blur-sm"
+        className="relative z-20 flex w-full flex-col items-center gap-5 rounded border-4 border-hud-gold bg-black/75 p-6 text-center backdrop-blur-sm"
       >
         <div className="border-l-4 border-hud-ember bg-black/50 px-4 py-3 text-left">
           <p className="font-rune text-xs uppercase tracking-[0.3em] text-hud-ember">
@@ -151,6 +144,14 @@ export function RiddleStage() {
           </div>
         )}
       </motion.div>
+        <Jesse
+          pose="reading"
+          chub={2}
+          house="Hufflepuff"
+          expression={expression}
+          className="pointer-events-none block h-40 w-auto drop-shadow-[4px_4px_0_rgba(0,0,0,0.6)] sm:absolute sm:bottom-0 sm:left-4 sm:z-10 sm:h-[60%] sm:drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+        />
+      </div>
     </StageShell>
   )
 }

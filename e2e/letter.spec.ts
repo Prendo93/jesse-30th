@@ -20,7 +20,7 @@ test('letter: open envelope, read parchment, accept, advance to sorting', async 
 
   // Skip the handwriting reveal, then accept.
   await page.getByTestId('letter-parchment').click()
-  await page.getByRole('button', { name: /reluctantly accept/i }).click()
+  await page.getByRole('button', { name: /^accept$/i }).click()
 
   // Lands on the sorting stage.
   await expect(page.getByTestId('current-stage')).toHaveAttribute(

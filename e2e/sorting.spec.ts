@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test'
+import { sortingQuestions } from '../src/data/sortingQuestions'
 
 const reachSortingStage = async (page: import('@playwright/test').Page) => {
   await page.goto('/')
   await page.getByTestId('letter-envelope').click()
   await page.getByTestId('letter-parchment').click()
-  await page.getByRole('button', { name: /reluctantly accept/i }).click()
+  await page.getByRole('button', { name: /^accept$/i }).click()
 }
 
 test.describe('sorting hat', () => {
@@ -15,7 +16,7 @@ test.describe('sorting hat', () => {
 
     // Click through every question — answers are ignored, so just pick
     // the first option each time.
-    for (let i = 0; i < 42; i += 1) {
+    for (let i = 0; i < sortingQuestions.length; i += 1) {
       const buttons = page.getByTestId('sorting-answer')
       await buttons.first().click()
     }

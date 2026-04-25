@@ -10,13 +10,8 @@ export function GiftStage() {
 
   return (
     <StageShell backdrop={<Backdrop name="treasure-room" />}>
-      <Jesse
-        pose={opened ? 'crowned' : 'default'}
-        chub={5}
-        house="Hufflepuff"
-        className="pointer-events-none absolute bottom-0 right-2 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
-      />
-      <div className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 text-center backdrop-blur-sm">
+      <div className="flex w-full max-w-2xl flex-col items-center gap-4">
+      <div className="relative z-20 flex w-full flex-col items-center gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 text-center backdrop-blur-sm">
         {!opened ? (
           <button
             type="button"
@@ -70,6 +65,13 @@ export function GiftStage() {
             </div>
           </div>
         )}
+      </div>
+        <Jesse
+          pose={opened ? 'crowned' : 'default'}
+          chub={5}
+          house="Hufflepuff"
+          className="pointer-events-none block h-40 w-auto drop-shadow-[4px_4px_0_rgba(0,0,0,0.6)] sm:absolute sm:bottom-0 sm:right-2 sm:z-10 sm:h-[55%] sm:drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
+        />
       </div>
     </StageShell>
   )

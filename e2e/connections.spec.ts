@@ -32,7 +32,7 @@ test.describe('connections', () => {
     )
   })
 
-  test('four wrong submissions still advance to riddle', async ({ page }) => {
+  test('four wrong submissions show game over with a time-turner retry', async ({ page }) => {
     await page.goto('/?stage=potions')
 
     // Pick four words that span different categories.
@@ -45,12 +45,16 @@ test.describe('connections', () => {
     }
 
     await expect(page.getByTestId('connections-outcome')).toContainText(
-      'Incomplete',
+      /Game Over/i,
     )
-    await page.getByRole('button', { name: /continue/i }).click()
+    // Stays on potions — does not auto-advance.
     await expect(page.getByTestId('current-stage')).toHaveAttribute(
       'data-stage',
-      'riddle',
+      'potions',
     )
+    // Time-Turner resets the puzzle.
+    await page.getByTestId('connections-retry').click()
+    await expect(page.getByTestId('connections-mistakes')).toContainText('0/4')
+    await expect(page.getByTestId('connections-submit')).toBeVisible()
   })
 })
