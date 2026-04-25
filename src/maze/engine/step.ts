@@ -3,6 +3,7 @@ import {
   CUP_PELLET_FRACTION,
   DEATH_FADE_MS,
   ENEMY_TILE_MS,
+  MAX_LIVES,
   PLAYER_TILE_MS,
   POWER_DURATION_MS,
   SURVIVE_DURATION_MS,
@@ -205,7 +206,17 @@ export function step(
         player: { ...state.player, deathFadeMs: remaining },
       }
     }
-    // Respawn
+    // Death fade complete. If the player has used all MAX_LIVES the
+    // engine flips to 'gameover' — the component listens for this and
+    // routes back to the Connections (potions) stage. Otherwise respawn
+    // at the player spawn with enemies back at their spawns.
+    if (state.deaths >= MAX_LIVES) {
+      return {
+        ...state,
+        phase: 'gameover',
+        tickMs: state.tickMs + dtMs,
+      }
+    }
     return {
       ...state,
       phase: 'play',
@@ -226,6 +237,10 @@ export function step(
       })),
       activePowers: [],
     }
+  }
+
+  if (state.phase === 'gameover') {
+    return state
   }
 
   const wasSurvive = state.phase === 'survive'

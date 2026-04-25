@@ -46,6 +46,7 @@ export const SURVIVE_DURATION_MS = 7_000
 export const CUP_ACTIVATION_MS = 30_000
 export const CUP_PELLET_FRACTION = 0.75
 export const DEATH_FADE_MS = 1_500
+export const MAX_LIVES = 3
 
 // Power-up effect durations.
 export const POWER_DURATION_MS = {

@@ -132,4 +132,40 @@ describe('step reducer', () => {
     const next = step(s, 1000, idle)
     expect(next).toBe(s)
   })
+
+  it('after MAX_LIVES deaths the next respawn flips to gameover', () => {
+    const grid = parseGrid(SMALL)
+    let s = createInitialState(grid)
+    // Pretend we've already died MAX_LIVES (3) times and we're in the
+    // dying fade about to expire.
+    s = {
+      ...s,
+      phase: 'dying',
+      deaths: 3,
+      player: { ...s.player, deathFadeMs: 0 },
+    }
+    s = step(s, 16, idle)
+    expect(s.phase).toBe('gameover')
+  })
+
+  it('GAMEOVER is terminal — further ticks are no-ops', () => {
+    const grid = parseGrid(SMALL)
+    let s = createInitialState(grid)
+    s = { ...s, phase: 'gameover', deaths: 3 }
+    expect(step(s, 100, idle)).toBe(s)
+  })
+
+  it('respawns normally with lives still remaining', () => {
+    const grid = parseGrid(SMALL)
+    let s = createInitialState(grid)
+    s = {
+      ...s,
+      phase: 'dying',
+      deaths: 1,
+      player: { ...s.player, tile: { x: 5, y: 1 }, deathFadeMs: 0 },
+    }
+    s = step(s, 16, idle)
+    expect(s.phase).toBe('play')
+    expect(s.player.tile).toEqual(grid.playerSpawn)
+  })
 })

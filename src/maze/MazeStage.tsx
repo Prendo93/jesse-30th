@@ -8,7 +8,12 @@ import {
   type StepInput,
 } from './engine/step'
 import { parseGrid } from './grid'
-import { MAZE_ASCII, PLAYER_TILE_MS, ENEMY_TILE_MS } from './constants'
+import {
+  MAX_LIVES,
+  MAZE_ASCII,
+  PLAYER_TILE_MS,
+  ENEMY_TILE_MS,
+} from './constants'
 import { TILE, type GameState } from './types'
 import { useDirectionInput } from './hooks/useDirectionInput'
 import { useGameLoop } from './hooks/useGameLoop'
@@ -40,6 +45,7 @@ export function MazeStage({ instant = false }: Props) {
   intentRef.current = intent
 
   const wonAdvancedRef = useRef(false)
+  const gameoverHandledRef = useRef(false)
 
   useGameLoop((dtMs) => {
     const next = step(stateRef.current, dtMs, { intent: intentRef.current })
@@ -62,6 +68,16 @@ export function MazeStage({ instant = false }: Props) {
       wonAdvancedRef.current = true
       markComplete('mazeDone')
       setTimeout(() => advance(), 600)
+    }
+    // Out of lives → after a brief beat, kick back to Connections (potions).
+    if (
+      stateRef.current.phase === 'gameover' &&
+      !gameoverHandledRef.current
+    ) {
+      gameoverHandledRef.current = true
+      setTimeout(() => {
+        useGameStore.setState({ stage: 'potions' })
+      }, 1800)
     }
   })
 
@@ -86,6 +102,19 @@ export function MazeStage({ instant = false }: Props) {
   return (
     <StageShell backdrop={<Backdrop name="hedgemaze" />}>
       <div className="relative z-20 flex flex-col items-center gap-3">
+        {state.phase === 'gameover' ? (
+          <div
+            data-testid="maze-gameover"
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-hud-night/85"
+          >
+            <p className="font-rune text-4xl uppercase tracking-[0.3em] text-hud-ember drop-shadow-[2px_2px_0_#000]">
+              Out of Lives
+            </p>
+            <p className="mt-4 font-body text-base italic text-torch-50">
+              Sent back to Snape's classroom…
+            </p>
+          </div>
+        ) : null}
         <div
           className="relative border-4 border-hud-gold bg-black/70 shadow-[6px_6px_0_#000] backdrop-blur-sm"
           style={{ width: W, height: H }}
@@ -167,7 +196,9 @@ export function MazeStage({ instant = false }: Props) {
           data-testid="maze-hud"
           className="flex w-full max-w-[504px] items-center justify-between gap-4 border-2 border-hud-gold bg-black/80 px-4 py-2 font-rune text-sm uppercase tracking-[0.2em] text-hud-gold"
         >
-          <span>Deaths: {state.deaths}</span>
+          <span data-testid="maze-lives">
+            Lives: {Math.max(0, MAX_LIVES - state.deaths)}/{MAX_LIVES}
+          </span>
           <span data-testid="maze-pellets">
             Pellets {state.pelletsCollected}/{state.pelletsTotal}
           </span>

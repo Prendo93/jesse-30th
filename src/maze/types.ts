@@ -59,7 +59,7 @@ export type Grid = {
   dotCount: number
 }
 
-export type Phase = 'play' | 'survive' | 'won' | 'dying'
+export type Phase = 'play' | 'survive' | 'won' | 'dying' | 'gameover'
 
 export type Enemy = {
   kind: EnemyKind
