@@ -9,15 +9,24 @@ import {
 } from '../data/potionsRecipe'
 import { useGameStore } from '../store'
 import { Backdrop } from '../art/Backdrop'
-import { Jesse } from '../art/Jesse'
+import { Jesse, type JesseExpression } from '../art/Jesse'
 
 const SLOT_COUNT = 3
+const INGREDIENT_EXPRESSIONS: Record<Ingredient, JesseExpression> = {
+  'Slimy Leaf': 'sad',
+  'Dusty Rock': 'worried',
+  'Questionable Liquid': 'afraid',
+  'Hair (source unclear)': 'crying',
+  'Something Glowing': 'anxious',
+  'A Bean': 'worried',
+}
 
 export function PotionsStage() {
   const [dropped, setDropped] = useState<Ingredient[]>([])
   const [outcome, setOutcome] = useState<null | {
     correct: boolean
   }>(null)
+  const [expression, setExpression] = useState<JesseExpression>('neutral')
   const advance = useGameStore((s) => s.advance)
   const markComplete = useGameStore((s) => s.markComplete)
   const copy = dialogue.potions
@@ -48,6 +57,7 @@ export function PotionsStage() {
         pose="mixing"
         chub={1}
         house="Hufflepuff"
+        expression={expression}
         className="pointer-events-none absolute bottom-2 right-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 grid w-full max-w-4xl gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm md:grid-cols-[1fr_auto_1fr]">
@@ -62,6 +72,8 @@ export function PotionsStage() {
                   type="button"
                   data-testid={`ingredient-${i}`}
                   onClick={() => addIngredient(i)}
+                  onMouseEnter={() => setExpression(INGREDIENT_EXPRESSIONS[i])}
+                  onMouseLeave={() => setExpression('neutral')}
                   disabled={!!outcome || dropped.length >= SLOT_COUNT}
                   className="w-full border-2 border-hud-gold/60 bg-hud-stone/70 px-3 py-2 text-left font-body text-base text-torch-50 transition hover:bg-hud-ember/40 disabled:cursor-not-allowed disabled:opacity-40"
                 >

@@ -64,6 +64,19 @@ describe('SortingStage', () => {
     },
   )
 
+  it('changes Jesse\'s expression on hovering an answer button', () => {
+    render(<SortingStage />)
+    const jesse = screen.getByTestId('jesse-character')
+    expect(jesse).toHaveAttribute('data-expression', 'neutral')
+
+    const answers = screen.getAllByTestId('sorting-answer')
+    fireEvent.mouseEnter(answers[0])
+    expect(jesse.getAttribute('data-expression')).not.toBe('neutral')
+
+    fireEvent.mouseLeave(answers[0])
+    expect(jesse).toHaveAttribute('data-expression', 'neutral')
+  })
+
   it('clicking continue on the reveal advances the store to potions', () => {
     render(<SortingStage />)
     answerEvery(() => 2)

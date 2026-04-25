@@ -5,15 +5,22 @@ import { dialogue } from '../data/dialogue'
 import { sortingQuestions } from '../data/sortingQuestions'
 import { useGameStore } from '../store'
 import { Backdrop } from '../art/Backdrop'
-import { Jesse } from '../art/Jesse'
+import { Jesse, type JesseExpression } from '../art/Jesse'
 
 type Phase = 'asking' | 'thinking' | 'reveal'
 
 const THINKING_MS = 2500
+const ANSWER_EXPRESSIONS: JesseExpression[] = [
+  'worried',
+  'afraid',
+  'anxious',
+  'sad',
+]
 
 export function SortingStage() {
   const [questionIndex, setQuestionIndex] = useState(0)
   const [phase, setPhase] = useState<Phase>('asking')
+  const [expression, setExpression] = useState<JesseExpression>('neutral')
   const advance = useGameStore((s) => s.advance)
   const current = sortingQuestions[questionIndex]
 
@@ -36,6 +43,7 @@ export function SortingStage() {
       <Jesse
         pose="default"
         chub={0}
+        expression={expression}
         className="pointer-events-none absolute bottom-0 left-4 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 flex w-full max-w-2xl flex-col items-center gap-6 rounded border-4 border-hud-gold bg-black/70 p-6 text-center backdrop-blur-sm">
@@ -54,6 +62,10 @@ export function SortingStage() {
                   type="button"
                   data-testid="sorting-answer"
                   onClick={onAnswer}
+                  onMouseEnter={() =>
+                    setExpression(ANSWER_EXPRESSIONS[i % ANSWER_EXPRESSIONS.length])
+                  }
+                  onMouseLeave={() => setExpression('neutral')}
                   className="border-2 border-hud-gold bg-hud-stone/80 px-4 py-3 font-body text-lg text-torch-50 transition hover:bg-hud-ember/40"
                 >
                   {answer}

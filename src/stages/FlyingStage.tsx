@@ -5,7 +5,7 @@ import { dialogue } from '../data/dialogue'
 import { useGameStore } from '../store'
 import { bandFor, type Band } from './flyingBand'
 import { Backdrop } from '../art/Backdrop'
-import { Jesse } from '../art/Jesse'
+import { Jesse, type JesseExpression } from '../art/Jesse'
 
 const TICK_MS = 50
 const STEP = 5
@@ -14,6 +14,7 @@ export function FlyingStage() {
   const [position, setPosition] = useState(0)
   const directionRef = useRef<1 | -1>(1)
   const [result, setResult] = useState<Band | null>(null)
+  const [expression, setExpression] = useState<JesseExpression>('neutral')
   const advance = useGameStore((s) => s.advance)
   const markComplete = useGameStore((s) => s.markComplete)
   const copy = dialogue.flying
@@ -56,6 +57,7 @@ export function FlyingStage() {
         pose="broom"
         chub={3}
         house="Hufflepuff"
+        expression={expression}
         className="pointer-events-none absolute bottom-4 left-2 z-10 h-[55%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 flex w-full max-w-md flex-col items-center gap-6 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm">
@@ -83,6 +85,8 @@ export function FlyingStage() {
           <button
             type="button"
             onClick={onMount}
+            onMouseEnter={() => setExpression('afraid')}
+            onMouseLeave={() => setExpression('neutral')}
             className="border-4 border-hud-gold bg-hud-stone px-6 py-2 font-rune text-lg uppercase tracking-[0.3em] text-hud-gold"
           >
             Mount Broom

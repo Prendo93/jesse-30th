@@ -4,7 +4,7 @@ import { ContinueButton } from '../components/ContinueButton'
 import { dialogue } from '../data/dialogue'
 import { useGameStore } from '../store'
 import { Backdrop } from '../art/Backdrop'
-import { Jesse } from '../art/Jesse'
+import { Jesse, type JesseExpression } from '../art/Jesse'
 
 const BUTTON_COUNT = 4
 const STEP_MS = 600
@@ -12,6 +12,12 @@ const SYMBOLS = ['✦', '✧', '✺', '❂'] as const
 const ROUND_LENGTHS = [3, 4]
 const MAX_ROUNDS = ROUND_LENGTHS.length
 const MAX_FAILURES = 2
+const BUTTON_EXPRESSIONS: JesseExpression[] = [
+  'worried',
+  'afraid',
+  'anxious',
+  'sad',
+]
 
 type Phase = 'show' | 'input' | 'result'
 
@@ -28,6 +34,7 @@ export function CharmsStage() {
   const [highlighted, setHighlighted] = useState<number | null>(null)
   const [playerInput, setPlayerInput] = useState<number[]>([])
   const [outcome, setOutcome] = useState<null | 'success' | 'failure'>(null)
+  const [expression, setExpression] = useState<JesseExpression>('neutral')
   const advance = useGameStore((s) => s.advance)
   const markComplete = useGameStore((s) => s.markComplete)
   const copy = dialogue.charms
@@ -107,6 +114,7 @@ export function CharmsStage() {
         pose="wand"
         chub={2}
         house="Hufflepuff"
+        expression={expression}
         className="pointer-events-none absolute bottom-0 left-4 z-10 h-[60%] w-auto drop-shadow-[6px_6px_0_rgba(0,0,0,0.6)]"
       />
       <div className="relative z-20 flex w-full max-w-xl flex-col items-center gap-8 rounded border-4 border-hud-gold bg-black/70 p-6 backdrop-blur-sm">
@@ -124,6 +132,8 @@ export function CharmsStage() {
               type="button"
               data-testid={`charm-button-${i}`}
               onClick={() => onPress(i)}
+              onMouseEnter={() => setExpression(BUTTON_EXPRESSIONS[i])}
+              onMouseLeave={() => setExpression('neutral')}
               disabled={phase !== 'input' || !!outcome}
               className={`flex h-24 w-24 items-center justify-center border-4 font-rune text-4xl transition-all duration-150 ${
                 highlighted === i
