@@ -3,6 +3,7 @@ import { useGameStore } from './store'
 import { LetterStage } from './stages/LetterStage'
 import { SortingStage } from './stages/SortingStage'
 import { PotionsStage } from './stages/PotionsStage'
+import { CharmsStage } from './stages/CharmsStage'
 import { CeremonyStage } from './stages/CeremonyStage'
 import { GiftStage } from './stages/GiftStage'
 import { StageShell } from './components/StageShell'
@@ -37,7 +38,7 @@ function App() {
     case 'potions':
       return <PotionsStage />
     case 'charms':
-      return <PlaceholderStage name="charms" />
+      return <CharmsStage />
     case 'flying':
       return <PlaceholderStage name="flying" />
     case 'ceremony':
