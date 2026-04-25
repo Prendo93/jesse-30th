@@ -30,7 +30,7 @@ export const dialogue = {
         'A wizard who cannot place a name within a lineage is a wizard who cannot be trusted with a wand.',
     },
     why:
-      'Today you will sort sixteen names into four kindreds: the Most Ancient and Most Noble House of Black; characters whose names belong to flowers; first names plucked from the night sky — exclusive of the Black family, who hoard the constellations; and members of the Hogwarts staff whose parents reached for Greco-Roman antiquity. Identify all four groups before exhausting your attempts, or do not bother coming back.',
+      'Today you will sort sixteen names into four kindreds:',
     shuffle: 'Shuffle',
     correct: 'Acceptable. Barely.',
     incorrect: 'You have run out of attempts. As expected.',
@@ -41,15 +41,33 @@ export const dialogue = {
     intro: {
       speaker: 'PEEVES',
       body:
-        "Oooh, ickle firstie wants to pass! Not before old Peevesy here. Solve my riddle or sit in the corridor forever!",
+        "Oooh, ickle firstie wants to pass! Not before old Peevesy here. Solve all four cluesies or sit in the corridor forever!",
     },
-    clue: 'Welsh estuary leads forth to kid enthusiast.',
     instructions:
-      'Type the answer below. Peeves will not let you past until you guess it.',
+      'Type the answer below. Peeves will not let you past until you guess every one.',
     wrong: 'PEEVES cackles: "Wrong! Wrong! Wrongity-wrong!"',
-    correct:
-      'PEEVES (sulking): "Lucky guess. LUCKY GUESS! …fine. Pass through. Boring."',
-    answer: 'ABERFORTH',
+    finalCorrect:
+      'PEEVES (sulking): "Lucky guesses. LUCKY GUESSES! …fine. Pass through. Boring."',
+    intermediateCorrect:
+      'PEEVES (twitching): "Hmph. Next one, then. Better be ready."',
+    riddles: [
+      {
+        clue: 'Welsh estuary leads forth to kid enthusiast.',
+        answer: 'ABERFORTH',
+      },
+      {
+        clue: 'Soundly angled supplies district.',
+        answer: 'DIAGON ALLEY',
+      },
+      {
+        clue: 'First president troubled with lower vampire expert.',
+        answer: 'WORPLE',
+      },
+      {
+        clue: 'Tell-tale wins most games.',
+        answer: 'SNITCH',
+      },
+    ],
   },
   maze: {
     intro: {

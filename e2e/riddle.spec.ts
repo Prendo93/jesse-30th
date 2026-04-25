@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('riddle', () => {
-  test('wrong guess shows feedback, correct guess advances to maze', async ({ page }) => {
+const ANSWERS = ['Aberforth', 'Diagon Alley', 'Worple', 'Snitch']
+
+test.describe('riddle gauntlet', () => {
+  test('solve all four cryptic clues to advance to maze', async ({ page }) => {
     await page.goto('/?stage=riddle')
     await expect(page.getByTestId('current-stage')).toHaveAttribute(
       'data-stage',
@@ -12,14 +14,18 @@ test.describe('riddle', () => {
       /Welsh estuary leads forth to kid enthusiast/i,
     )
 
-    await page.getByTestId('riddle-input').fill('Snape')
+    // Wrong guess gets feedback
+    await page.getByTestId('riddle-input').fill('wronganswer')
     await page.getByTestId('riddle-submit').click()
     await expect(page.getByTestId('riddle-feedback')).toBeVisible()
 
-    await page.getByTestId('riddle-input').fill('Aberforth')
-    await page.getByTestId('riddle-submit').click()
-    await page.getByRole('button', { name: /continue/i }).click()
+    // Walk every clue
+    for (const answer of ANSWERS) {
+      await page.getByTestId('riddle-input').fill(answer)
+      await page.getByTestId('riddle-submit').click()
+    }
 
+    await page.getByRole('button', { name: /continue/i }).click()
     await expect(page.getByTestId('current-stage')).toHaveAttribute(
       'data-stage',
       'maze',

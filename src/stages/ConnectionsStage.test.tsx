@@ -28,11 +28,10 @@ describe('ConnectionsStage', () => {
     expect(screen.getByTestId('connections-submit')).toBeDisabled()
   })
 
-  it('shows the Snape intro explaining why the class must be passed', () => {
+  it('shows the Snape intro framing the exercise', () => {
     render(<ConnectionsStage />)
     const intro = screen.getByTestId('connections-intro')
     expect(intro).toHaveTextContent('SNAPE')
-    expect(intro).toHaveTextContent(/Most Ancient and Most Noble House of Black/)
     expect(intro).toHaveTextContent(/four kindreds/)
   })
 

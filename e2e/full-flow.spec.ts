@@ -44,10 +44,12 @@ test('happy path: letter → sorting → potions → riddle → maze → ceremon
   }
   await page.getByRole('button', { name: /continue/i }).click()
 
-  // Riddle — Peeves's cryptic clue. Answer is ABERFORTH.
+  // Riddle — solve Peeves's four-clue gauntlet.
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'riddle')
-  await page.getByTestId('riddle-input').fill('Aberforth')
-  await page.getByTestId('riddle-submit').click()
+  for (const answer of ['Aberforth', 'Diagon Alley', 'Worple', 'Snitch']) {
+    await page.getByTestId('riddle-input').fill(answer)
+    await page.getByTestId('riddle-submit').click()
+  }
   await page.getByRole('button', { name: /continue/i }).click()
 
   // Maze — instant-win mode auto-advances.
