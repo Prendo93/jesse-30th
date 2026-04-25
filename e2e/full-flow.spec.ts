@@ -52,8 +52,9 @@ test('happy path: letter → sorting → potions → riddle → maze → ceremon
   }
   await page.getByRole('button', { name: /continue/i }).click()
 
-  // Maze — instant-win mode auto-advances.
-  await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'maze')
+  // Maze — instant-win mode auto-advances straight to ceremony, so the
+  // maze stage flashes by faster than Playwright can poll. Dedicated
+  // maze.spec.ts covers both the instant hop and the live render.
 
   // Ceremony — wait for twist, then claim reward.
   await expect(page.getByTestId('current-stage')).toHaveAttribute('data-stage', 'ceremony')
