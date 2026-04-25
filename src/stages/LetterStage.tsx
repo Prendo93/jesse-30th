@@ -18,7 +18,7 @@ const FULL_LETTER = [
   'and Wizardry.\f',
   '',
   '(Standards have recently been',
-  'lowered, considerably.)',
+  'lowered, considerably.)\f',
   '',
   'Term begins immediately.',
   '',
