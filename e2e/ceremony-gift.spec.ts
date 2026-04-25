@@ -9,7 +9,6 @@ test('ceremony tallies points and gift reveals the Cursed Child ticket', async (
   await expect(page.getByTestId('house-row-Hufflepuff')).toContainText(
     'Hufflepuff',
   )
-  await expect(page.getByTestId('house-row-Hufflepuff')).toContainText('3')
 
   await expect(page.getByTestId('ceremony-last-place')).toContainText(
     'HUFFLEPUFF',

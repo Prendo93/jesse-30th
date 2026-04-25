@@ -12,7 +12,16 @@ type Phase = 'tally' | 'lastPlace' | 'twist'
 
 export function CeremonyStage() {
   const advance = useGameStore((s) => s.advance)
+  const player = useGameStore((s) => s.player)
   const [phase, setPhase] = useState<Phase>('tally')
+
+  // Hufflepuff: +1 per class survived. Maze adds an extra point because
+  // it actually required winning.
+  const hufflepuffScore =
+    (player.potionsDone ? 1 : 0) +
+    (player.charmsDone ? 1 : 0) +
+    (player.flyingDone ? 1 : 0) +
+    (player.mazeDone ? 1 : 0)
 
   const rivalScores = useMemo(
     () =>
@@ -60,11 +69,11 @@ export function CeremonyStage() {
           ))}
           <li
             data-testid="house-row-Hufflepuff"
-            data-score={3}
+            data-score={hufflepuffScore}
             className="flex items-center justify-between border-2 border-hud-ember bg-hud-ember/20 px-4 py-2 font-body text-lg"
           >
             <span>Hufflepuff</span>
-            <span className="font-rune text-hud-gold">3</span>
+            <span className="font-rune text-hud-gold">{hufflepuffScore}</span>
           </li>
         </ul>
 

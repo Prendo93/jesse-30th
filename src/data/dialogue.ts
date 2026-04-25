@@ -45,6 +45,15 @@ export const dialogue = {
     okay: 'The broom acknowledges your presence.',
     fail: 'You remain grounded. Spiritually and physically.',
   },
+  maze: {
+    intro: {
+      speaker: 'TOURNAMENT',
+      body:
+        'Reach the cup. Don\'t get caught. Don\'t think about it. The hedges are watching.',
+    },
+    win: 'You held the cup for long enough that nobody could prove it was an accident.',
+    death: 'The dementor said hello. You said something less polite.',
+  },
   ceremony: {
     title: 'House Points',
     lastPlace: 'And in last place… with a commendable lack of achievement… HUFFLEPUFF!',
